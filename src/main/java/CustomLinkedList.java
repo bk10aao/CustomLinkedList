@@ -2,7 +2,7 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class CustomLinkedList<T> {
+public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
 
     private Node head;
 
