@@ -1,4 +1,5 @@
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -78,15 +79,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     public boolean contains(final T item) {
         if(item == null)
             throw new NullPointerException();
-        if(head.data.equals(item))
-            return true;
-        Node current = head.nextNode;
-        while (current.nextNode != null) {
-            if(current.data.equals(item))
-                return true;
-            current = current.nextNode;
-        }
-        return false;
+        return indexOf(item) > -1;
     }
 
     public T element() {
@@ -132,37 +125,19 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public int indexOf(final T item) {
-        if(head != null) {
-            int index = 0;
-            Node currentNode = head;
-            while(currentNode.nextNode != null) {
-                if(currentNode.data.equals(item))
-                    return index;
-                index++;
-                currentNode = currentNode.nextNode;
-            }
-            if(currentNode.data.equals(item))
+        int index = 0;
+        for (Node x = head; x != null; x = x.nextNode, index++)
+            if (x.data == item)
                 return index;
-        }
         return -1;
     }
 
     public int lastIndexOf(final T item) {
         int foundIndex = -1;
-        if(size == 0)
-            return -1;
-        if(head != null) {
-            int index = 0;
-            Node currentNode = head;
-            while(currentNode.nextNode != null) {
-                if(currentNode.data.equals(item))
-                    foundIndex =  index;
-                index++;
-                currentNode = currentNode.nextNode;
-            }
-            if(currentNode.data.equals(item))
-                return index;
-        }
+        int index = 0;
+        for (Node x = head; x != null; x = x.nextNode, index++)
+            if (x.data == item)
+                foundIndex = index;
         return foundIndex;
     }
 
@@ -295,6 +270,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
             head.data = item;
             return previousValue;
         } else {
+
             int currentIndex = 0;
             Node currentHead = head;
             while(currentHead.nextNode != null) {
