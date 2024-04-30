@@ -270,18 +270,22 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
             head.data = item;
             return previousValue;
         } else {
+            return updateIndex(index, item);
+        }
+    }
 
-            int currentIndex = 0;
-            Node currentHead = head;
-            while(currentHead.nextNode != null) {
-                if(currentIndex == index) {
-                    previousValue = currentHead.data;
-                    currentHead.data = item;
-                    return previousValue;
-                }
-                currentHead = currentHead.nextNode;
-                currentIndex++;
+    private T updateIndex(int index, T item) {
+        T previousValue;
+        int currentIndex = 0;
+        Node currentHead = head;
+        while(currentHead.nextNode != null) {
+            if(currentIndex == index) {
+                previousValue = currentHead.data;
+                currentHead.data = item;
+                return previousValue;
             }
+            currentHead = currentHead.nextNode;
+            currentIndex++;
         }
         return null;
     }
