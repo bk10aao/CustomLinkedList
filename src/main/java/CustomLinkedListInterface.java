@@ -160,8 +160,8 @@ public interface CustomLinkedListInterface<T> {
     void push(final T item);
 
     /**
-     * remove item from end of list
-     * @return item at end of list
+     * remove item from start of list
+     * @return item at start of list
      */
     T pop();
 
