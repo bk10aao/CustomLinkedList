@@ -1,4 +1,6 @@
+import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class CustomLinkedList<T> {
 
@@ -9,52 +11,80 @@ public class CustomLinkedList<T> {
     public CustomLinkedList() {
     }
 
-    public boolean add(T data){
+    public boolean add(final T data){
         if(this.head == null)
             head = new Node(data);
         else {
             Node currentNode = head;
-            while(currentNode.getNextNode() != null)
-                currentNode = currentNode.getNextNode();
-            currentNode.setNextNode(new Node(data));
+            while(currentNode.nextNode != null)
+                currentNode = currentNode.nextNode;
+            currentNode.nextNode = new Node(data);
         }
         size++;
         return true;
     }
 
-    public void add(int index, T data){
+    public void add(final int index, final T data){
         if(index < 0 || index > size)
             throw new IndexOutOfBoundsException();
         Node nodeToBeInserted = new Node(data);
         Node node = head;
         for(int i = 0; i< index -1; i++)
-            node = node.getNextNode();
-        nodeToBeInserted.setNextNode(node.getNextNode());
-        node.setNextNode(nodeToBeInserted);
+            node = node.nextNode;
+        nodeToBeInserted.nextNode  = node.nextNode;
+        node.nextNode = nodeToBeInserted;
         size++;
     }
 
-    public void addFirst(T item) {
+    public boolean addAll(final Collection<T> collection) {
+        if(collection == null)
+            throw new NullPointerException();
+        int startSize = size;
+        collection.forEach(this::add);
+        return startSize != size;
+    }
+
+    public boolean addAll(final int index, final Collection<T> collection) {
+        if(collection == null)
+            throw new NullPointerException();
+        if(index < 0 || index > size)
+            throw new IndexOutOfBoundsException();
+        int startSize = size;
+        int insertIndex = 0;
+        Node currentNode = head;
+        while(currentNode.nextNode != null) {
+            if(insertIndex == index) {
+                for (T item : collection)
+                    add(insertIndex++, item);
+                break;
+            }
+            insertIndex++;
+            currentNode = currentNode.nextNode;
+        }
+        return startSize != size;
+    }
+
+    public void addFirst(final T item) {
         Node newHead = new Node(item);
         newHead.nextNode = head;
         head = newHead;
         size++;
     }
 
-    public void addLast(T item) {
+    public void addLast(final T item) {
         add(item);
     }
 
-    public boolean contains(T item) {
+    public boolean contains(final T item) {
         if(item == null)
             throw new NullPointerException();
         if(head.data.equals(item))
             return true;
         Node current = head.nextNode;
-        while (current.getNextNode() != null) {
+        while (current.nextNode != null) {
             if(current.data.equals(item))
                 return true;
-            current = current.getNextNode();
+            current = current.nextNode;
         }
         return false;
     }
@@ -65,15 +95,30 @@ public class CustomLinkedList<T> {
         return head.data;
     }
 
-    public T get(int index) {
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        System.out.println(o.getClass());
+        if (getClass() != o.getClass())
+            return false;
+        CustomLinkedList<?> that = (CustomLinkedList<?>) o;
+        T[] firstArray = this.toArray();
+        T[] secondArray = (T[]) ((CustomLinkedList<?>) o).toArray();
+        for(int i = 0; i < firstArray.length; i++)
+            if (!firstArray[i].equals(secondArray[i]))
+                return false;
+        return size == that.size;
+    }
+
+    public T get(final int index) {
         if(index >= size || index < 0)
             throw new IndexOutOfBoundsException();
         if(index == 0)
             return head.data;
         Node current = head.nextNode;
         if(index == size - 1)
-            while (current.getNextNode() != null)
-                current = current.getNextNode();
+            while (current.nextNode != null)
+                current = current.nextNode;
         else
             for (int i = 0; i < index - 1; i++)
                 current = current.nextNode;
@@ -81,16 +126,56 @@ public class CustomLinkedList<T> {
         return current.data;
     }
 
-    public boolean offer(T item) {
+    @Override
+    public int hashCode() {
+        return Objects.hash(head, size);
+    }
+
+    public int indexOf(final T item) {
+        if(head != null) {
+            int index = 0;
+            Node currentNode = head;
+            while(currentNode.nextNode != null) {
+                if(currentNode.data.equals(item))
+                    return index;
+                index++;
+                currentNode = currentNode.nextNode;
+            }
+            if(currentNode.data.equals(item))
+                return index;
+        }
+        return -1;
+    }
+
+    public int lastIndexOf(final T item) {
+        int foundIndex = -1;
+        if(size == 0)
+            return -1;
+        if(head != null) {
+            int index = 0;
+            Node currentNode = head;
+            while(currentNode.nextNode != null) {
+                if(currentNode.data.equals(item))
+                    foundIndex =  index;
+                index++;
+                currentNode = currentNode.nextNode;
+            }
+            if(currentNode.data.equals(item))
+                return index;
+        }
+        return foundIndex;
+    }
+
+    public boolean offer(final T item) {
         return add(item);
     }
 
-    public boolean offerFirst(T item) {
+    public boolean offerFirst(final T item) {
         addFirst(item);
         return head.data == item;
     }
 
-    public boolean offerLast(T item) {
+    public boolean offerLast(final T item) {
         addLast(item);
         return get(size - 1).equals(item);
     }
@@ -138,7 +223,7 @@ public class CustomLinkedList<T> {
         return last;
     }
 
-    public void push(T item) {
+    public void push(final T item) {
         addFirst(item);
     }
 
@@ -148,50 +233,122 @@ public class CustomLinkedList<T> {
         return poll();
     }
 
-    public boolean remove(int index) {
+    public T remove() {
+        if(size == 0)
+            throw new NoSuchElementException();
+        return pollFirst();
+    }
+
+    public boolean remove(final int index) {
         if(index > size || index < 0)
             throw new IndexOutOfBoundsException();
         Node node = head;
-        for(int i = 0; i< index -1; i++)
-            node = node.getNextNode();
-        node.setNextNode(node.getNextNode().getNextNode());
+        for(int i = 0; i < index -1; i++)
+            node = node.nextNode;
+        node.nextNode = node.nextNode.nextNode;
         size--;
         return true;
     }
 
+    public T remove(final T item) {
+        if(contains(item)) {
+            remove(indexOf(item));
+            return item;
+        }
+        return null;
+    }
+
+    public T removeFirst() {
+        if(size == 0)
+            throw new NoSuchElementException();
+        return poll();
+    }
+
+    public boolean removeFirstOccurrence(final T item) {
+        if(item == null || size == 0)
+            return false;
+        if(contains(item))
+            return remove(indexOf(item));
+        return false;
+    }
+
+    public T removeLast() {
+        if(size == 0)
+            throw new NoSuchElementException();
+        return pollLast();
+    }
+
+    public boolean removeLastOccurrence(final T item) {
+        if(item == null || size == 0)
+            return false;
+        if(contains(item))
+            return remove(lastIndexOf(item));
+        return false;
+    }
+
+    public T set(final int index, final T item) {
+        if(index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
+        T previousValue;
+        if(index == 0) {
+            previousValue = head.data;
+            head.data = item;
+            return previousValue;
+        } else {
+            int currentIndex = 0;
+            Node currentHead = head;
+            while(currentHead.nextNode != null) {
+                if(currentIndex == index) {
+                    previousValue = currentHead.data;
+                    currentHead.data = item;
+                    return previousValue;
+                }
+                currentHead = currentHead.nextNode;
+                currentIndex++;
+            }
+        }
+        return null;
+    }
 
     public int size() {
         return this.size;
+    }
+
+    public T[] toArray() {
+        if(head != null) {
+            Object[] array = new Object[size];
+            int insertIndex = 0;
+            Node currentNode = head;
+            while(currentNode.nextNode != null){
+                array[insertIndex++] = currentNode.data;
+                currentNode = currentNode.nextNode;
+            }
+            array[insertIndex] = currentNode.data;
+            return (T[]) array;
+        }
+        return null;
     }
 
     public String toString(){
         StringBuilder s = new StringBuilder();
         if(head != null) {
             Node currentNode = head;
-            while(currentNode.getNextNode() != null){
+            while(currentNode.nextNode != null){
                 s.append(currentNode.data).append("\n");
-                currentNode = currentNode.getNextNode();
+                currentNode = currentNode.nextNode;
             }
             s.append(currentNode.data);
         }
         return s.toString();
     }
 
-    public class Node {
+    private class Node {
 
-        private final T data;
+        private T data;
         private Node nextNode;
 
-        public Node(T data){
+        public Node(T data) {
             this.data = data;
-        }
-
-        public Node getNextNode() {
-            return nextNode;
-        }
-
-        public void setNextNode(Node nextNode) {
-            this.nextNode = nextNode;
         }
     }
 }

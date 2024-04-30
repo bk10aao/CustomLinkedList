@@ -1,9 +1,13 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -361,7 +365,7 @@ public class CustomLinkedListTest {
     }
 
     @Test
-    public void givenEmptyLinkedList_onPop_throws_NoSuchElementExceptiont() {
+    public void givenEmptyLinkedList_onPop_throws_NoSuchElementException() {
         CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
         assertThrows(NoSuchElementException.class, customLinkedList::pop);
     }
@@ -374,5 +378,324 @@ public class CustomLinkedListTest {
         assertTrue(customLinkedList.add(3));
         assertEquals(1, customLinkedList.pop());
         assertEquals(2, customLinkedList.get(0));
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_onSetIndexOf_negative_1_to_40throwsIndexOutOfBoundsException() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> customLinkedList.set(-1, 40));
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_onSetIndexOf_4_to_40throwsIndexOutOfBoundsException() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> customLinkedList.set(4, 40));
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_onSetIndexOf_0_to_10_updatesIndexValueTo_10() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        assertEquals(1,  customLinkedList.set(0, 10));
+        assertEquals(10, customLinkedList.get(0));
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_onSetIndexOf_1_to_10_updatesIndexValueTo_10() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        assertEquals(2,  customLinkedList.set(1, 10));
+        assertEquals(10, customLinkedList.get(1));
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_4_onSetIndexOf_2_to_10_updatesIndexValueTo_10() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        assertTrue(customLinkedList.add(4));
+        assertEquals(3,  customLinkedList.set(2, 10));
+        assertEquals(10, customLinkedList.get(2));
+    }
+
+    @Test
+    public void givenLinkedListOfTypeInteger_withNoValues_onToArray_returns_null() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertNull(customLinkedList.toArray());
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_onToArray_returnsCorrectArray() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        assertArrayEquals(new Integer[] { 1, 2, 3 } , customLinkedList.toArray());
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_onAddingNullCollection_throws_NullPointerException() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertThrows(NullPointerException.class, () -> customLinkedList.addAll(null));
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_onAddAll_4_5_6_updatesListCorrectly() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        Collection<Integer> collection = new ArrayList<>();
+        collection.add(4);
+        collection.add(5);
+        collection.add(6);
+        assertTrue(customLinkedList.addAll(collection));
+        assertEquals(1, customLinkedList.get(0));
+        assertEquals(2, customLinkedList.get(1));
+        assertEquals(3, customLinkedList.get(2));
+        assertEquals(4, customLinkedList.get(3));
+        assertEquals(5, customLinkedList.get(4));
+        assertEquals(6, customLinkedList.get(5));
+    }
+
+    @Test
+    public void givenTwoLinkedListsOfType_Integer_firstValues_1_2_3_secondValue_4_5_6_onEquals_returnsFalse() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+
+        CustomLinkedList<Integer> customLinkedListTwo = new CustomLinkedList<>();
+        customLinkedListTwo.add(4);
+        customLinkedListTwo.add(5);
+        customLinkedListTwo.add(6);
+        assertNotEquals(customLinkedList, customLinkedListTwo);
+    }
+
+    @Test
+    public void givenTwoLinkedListsOfType_Integer_firstValues_1_2_3_secondValue_1_2_3_onEquals_returnsTrue() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+
+        CustomLinkedList<Integer> customLinkedListTwo = new CustomLinkedList<>();
+        customLinkedListTwo.add(1);
+        customLinkedListTwo.add(2);
+        customLinkedListTwo.add(3);
+        assertEquals(customLinkedList, customLinkedListTwo);
+    }
+
+    @Test
+    public void givenEmptyLinkedList_onRemove_throws_NoSuchElementException() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertThrows(NoSuchElementException.class, customLinkedList::remove);
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_onRemove_returns_1() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        assertEquals(1, customLinkedList.remove());
+        assertEquals(2, customLinkedList.peek());
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_onRemoveObject_d_returns_null() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertNull(customLinkedList.remove("d"));
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_onRemoveObject_b_returns_b_andRemoveItFromList() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals("b", customLinkedList.remove("b"));
+        assertEquals("a", customLinkedList.get(0));
+        assertEquals("c", customLinkedList.get(1));
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_onIndexOf_d_returns_minus_1() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals(-1, customLinkedList.indexOf("d"));
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_onIndexOf_a_returns_0_b_1_c_2() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals(0, customLinkedList.indexOf("a"));
+        assertEquals(1, customLinkedList.indexOf("b"));
+        assertEquals(2, customLinkedList.indexOf("c"));
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_onLastIndexOf_d_returns_minus_1() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals(-1, customLinkedList.lastIndexOf("d"));
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_onLastIndexOf_a_returns_0() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals(0, customLinkedList.lastIndexOf("a"));
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_onLastIndexOf_b_returns_1() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals(1, customLinkedList.lastIndexOf("b"));
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_a_c_a_d_e_onLastIndexOf_a_returns_4() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("c"));
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("d"));
+        assertEquals(4, customLinkedList.lastIndexOf("a"));
+    }
+
+    @Test
+    public void givenEmptyLinkedList_on_removeFirst_throws_NoSuchElementException() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertThrows(NoSuchElementException.class, customLinkedList::removeFirst);
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_on_removeFirst_returns_a_andHeadSetsTo_b() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals("a", customLinkedList.removeFirst());
+        assertEquals("b", customLinkedList.peek());
+        assertEquals(2, customLinkedList.size());
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_String_on_removeLast_throws_NoSuchElementException() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertThrows(NoSuchElementException.class, customLinkedList::removeLast);
+    }
+
+    @Test
+    public void givenLinkedListOfType_String_withValues_a_b_c_on_removeLast_returns_c_andSetsLastElementTo_b() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals("c", customLinkedList.removeLast());
+        assertEquals("b", customLinkedList.peekLast());
+        assertEquals(2, customLinkedList.size());
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_String_on_removeFirstOccurrence_returns_false() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertFalse(customLinkedList.removeFirstOccurrence(null));
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_String_withValues_a_b_c_on_removeFirstOccurrenceOf_d_returns_false() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertFalse(customLinkedList.removeFirstOccurrence("d"));
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_String_withValues_a_b_c_on_removeFirstOccurrenceOf_b_returns_true() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertTrue(customLinkedList.removeFirstOccurrence("b"));
+        assertEquals("a", customLinkedList.get(0));
+        assertEquals("c", customLinkedList.get(1));
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_String_on_removeLastOccurrence_returns_false() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertFalse(customLinkedList.removeLastOccurrence(null));
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_String_withValues_a_b_c_on_removeLastOccurrenceOf_d_returns_false() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertFalse(customLinkedList.removeLastOccurrence("d"));
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_String_withValues_a_b_c_a_c_on_removeLastOccurrenceOf_a_returns_true() {
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("b"));
+        assertTrue(customLinkedList.add("c"));
+        assertTrue(customLinkedList.add("a"));
+        assertTrue(customLinkedList.add("c"));
+        assertEquals("a", customLinkedList.get(3));
+        assertTrue(customLinkedList.removeLastOccurrence("a"));
+        assertEquals("c", customLinkedList.get(3));
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_Integer_withValues_1_2_3_onAddAllAtIndex_1_collection_4_5_6_returns_1_4_5_6_2_3() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        Collection<Integer> collection = new ArrayList<>();
+        collection.add(4);
+        collection.add(5);
+        collection.add(6);
+        assertTrue(customLinkedList.addAll(1, collection));
+        assertEquals(1, customLinkedList.get(0));
+        assertEquals(4, customLinkedList.get(1));
+        assertEquals(5, customLinkedList.get(2));
+        assertEquals(6, customLinkedList.get(3));
+        assertEquals(2, customLinkedList.get(4));
+        assertEquals(3, customLinkedList.get(5));
     }
 }
