@@ -47,6 +47,12 @@ public interface CustomLinkedListInterface<T> {
     void addLast(final T item);
 
     /**
+     * Get a shallow clone of list
+     * @return CustomLinkedList<T> - clone of list.
+     */
+    CustomLinkedList<T> clone();
+
+    /**
      * Get whether item is in list
      * @param item - item to be searched for
      * @return true if present, else false

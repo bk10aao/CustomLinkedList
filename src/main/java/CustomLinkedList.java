@@ -76,6 +76,13 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         add(item);
     }
 
+    public CustomLinkedList<T> clone() {
+        CustomLinkedList<T> clone = new CustomLinkedList<>();
+        for (Node x = head; x != null; x = x.nextNode)
+            clone.add(x.data);
+        return clone;
+    }
+
     public boolean contains(final T item) {
         if(item == null)
             throw new NullPointerException();

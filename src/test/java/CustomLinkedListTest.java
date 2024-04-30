@@ -698,4 +698,15 @@ public class CustomLinkedListTest {
         assertEquals(2, customLinkedList.get(4));
         assertEquals(3, customLinkedList.get(5));
     }
+
+    @Test
+    public void givenEmptyLinkedListOfType_Integer_withValues_1_2_3_onClone_returnsMatchingLinkedList() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+
+        CustomLinkedList<Integer> clone = customLinkedList.clone();
+        assertEquals(customLinkedList, clone);
+    }
 }
