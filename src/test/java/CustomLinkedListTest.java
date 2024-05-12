@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -16,8 +17,25 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenDefaultConstructor_returnsSizeOf_0() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertEquals(0, customLinkedList.size());
+        assertEquals(0, new CustomLinkedList<>().size());
+    }
+
+    @Test
+    public void givenConstructorWithCollectionParameter_onNullCollection_throws_NullPointerException() {
+        assertThrows(NullPointerException.class, () -> new CustomLinkedList<Integer>(null));
+    }
+
+    @Test
+    public void givenConstructorWithCollectionParameter_onCollectionOf_0_1_2_3_4_containsValues_withSizeOf_5() {
+        Collection<Integer> values = new ArrayList<>();
+        for(int i = 0; i < 5; i++)
+            values.add(i);
+        LinkedList<Integer> list = new LinkedList<>(values);
+        assertTrue(list.contains(0));
+        assertTrue(list.contains(1));
+        assertTrue(list.contains(2));
+        assertTrue(list.contains(3));
+        assertTrue(list.contains(4));
     }
 
     @Test
@@ -115,8 +133,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedListOfType_onGet_negativeOne_throwsIndexOutOfBoundsException() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertThrows(IndexOutOfBoundsException.class, () -> customLinkedList.get(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> new CustomLinkedList<>().get(-1));
     }
 
     @Test
@@ -217,8 +234,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedList_of_element_throws_NoSuchElementException() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertThrows(NoSuchElementException.class, customLinkedList::element);
+        assertThrows(NoSuchElementException.class, new CustomLinkedList<>()::element);
     }
 
     @Test
@@ -232,8 +248,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedList_onPoll_returns_null() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertNull(customLinkedList.poll());
+        assertNull(new CustomLinkedList<>().poll());
     }
 
     @Test
@@ -295,8 +310,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedList_onPeekFirst_returns_null() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertNull(customLinkedList.peekFirst());
+        assertNull(new CustomLinkedList<>().peekFirst());
     }
 
     @Test
@@ -310,8 +324,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedList_onPeekLast_returns_null() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertNull(customLinkedList.peekLast());
+        assertNull(new CustomLinkedList<>().peekLast());
     }
 
     @Test
@@ -325,8 +338,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedList_onPollFirst_returns_null() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertNull(customLinkedList.pollFirst());
+        assertNull(new CustomLinkedList<>().pollFirst());
     }
 
     @Test
@@ -340,8 +352,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedList_on_pollLast_returns_null() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertNull(customLinkedList.pollLast());
+        assertNull(new CustomLinkedList<>().pollLast());
     }
 
     @Test
@@ -366,8 +377,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedList_onPop_throws_NoSuchElementException() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertThrows(NoSuchElementException.class, customLinkedList::pop);
+        assertThrows(NoSuchElementException.class, new CustomLinkedList<>()::pop);
     }
 
     @Test
@@ -431,8 +441,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenLinkedListOfTypeInteger_withNoValues_onToArray_returns_null() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-        assertNull(customLinkedList.toArray());
+        assertNull(new CustomLinkedList<>().toArray());
     }
 
     @Test
@@ -594,8 +603,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedList_on_removeFirst_throws_NoSuchElementException() {
-        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
-        assertThrows(NoSuchElementException.class, customLinkedList::removeFirst);
+        assertThrows(NoSuchElementException.class, new CustomLinkedList<>()::removeFirst);
     }
 
     @Test
@@ -611,8 +619,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedListOfType_String_on_removeLast_throws_NoSuchElementException() {
-        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
-        assertThrows(NoSuchElementException.class, customLinkedList::removeLast);
+        assertThrows(NoSuchElementException.class, new CustomLinkedList<>()::removeLast);
     }
 
     @Test
@@ -628,8 +635,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedListOfType_String_on_removeFirstOccurrence_returns_false() {
-        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
-        assertFalse(customLinkedList.removeFirstOccurrence(null));
+        assertFalse(new CustomLinkedList<>().removeFirstOccurrence(null));
     }
 
     @Test
@@ -654,8 +660,7 @@ public class CustomLinkedListTest {
 
     @Test
     public void givenEmptyLinkedListOfType_String_on_removeLastOccurrence_returns_false() {
-        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
-        assertFalse(customLinkedList.removeLastOccurrence(null));
+        assertFalse(new CustomLinkedList<>().removeLastOccurrence(null));
     }
 
     @Test

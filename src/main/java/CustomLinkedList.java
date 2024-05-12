@@ -10,6 +10,13 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     private int size = 0;
 
     public CustomLinkedList() {
+
+    }
+
+    public CustomLinkedList(Collection<T> items) {
+        if(items == null)
+            throw new NullPointerException("Null collection not supported");
+        this.addAll(items);
     }
 
     public boolean add(final T data){
@@ -98,7 +105,6 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        System.out.println(o.getClass());
         if (getClass() != o.getClass())
             return false;
         CustomLinkedList<?> that = (CustomLinkedList<?>) o;
@@ -122,7 +128,6 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         else
             for (int i = 0; i < index - 1; i++)
                 current = current.nextNode;
-
         return current.data;
     }
 
@@ -167,9 +172,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public T peekFirst() {
-        if(size == 0)
-            return null;
-        return peek();
+        return size == 0 ? null : peek();
     }
 
     public T peekLast() {
@@ -185,7 +188,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public T poll() {
-        if(size== 0)
+        if(size == 0)
             return null;
         T headValue = head.data;
         head = head.nextNode;
@@ -249,9 +252,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     public boolean removeFirstOccurrence(final T item) {
         if(item == null || size == 0)
             return false;
-        if(contains(item))
-            return remove(indexOf(item));
-        return false;
+        return contains(item) ? remove(indexOf(item)) : false;
     }
 
     public T removeLast() {
@@ -263,9 +264,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     public boolean removeLastOccurrence(final T item) {
         if(item == null || size == 0)
             return false;
-        if(contains(item))
-            return remove(lastIndexOf(item));
-        return false;
+        return contains(item) ? remove(lastIndexOf(item)) : false;
     }
 
     public T set(final int index, final T item) {
@@ -279,22 +278,6 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         } else {
             return updateIndex(index, item);
         }
-    }
-
-    private T updateIndex(int index, T item) {
-        T previousValue;
-        int currentIndex = 0;
-        Node currentHead = head;
-        while(currentHead.nextNode != null) {
-            if(currentIndex == index) {
-                previousValue = currentHead.data;
-                currentHead.data = item;
-                return previousValue;
-            }
-            currentHead = currentHead.nextNode;
-            currentIndex++;
-        }
-        return null;
     }
 
     public int size() {
@@ -327,6 +310,22 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
             s.append(currentNode.data);
         }
         return s.toString();
+    }
+
+    private T updateIndex(int index, T item) {
+        T previousValue;
+        int currentIndex = 0;
+        Node currentHead = head;
+        while(currentHead.nextNode != null) {
+            if(currentIndex == index) {
+                previousValue = currentHead.data;
+                currentHead.data = item;
+                return previousValue;
+            }
+            currentHead = currentHead.nextNode;
+            currentIndex++;
+        }
+        return null;
     }
 
     private class Node {
