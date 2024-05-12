@@ -13,7 +13,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
 
     }
 
-    public CustomLinkedList(Collection<T> items) {
+    public CustomLinkedList(final Collection<T> items) {
         if(items == null)
             throw new NullPointerException("Null collection not supported");
         this.addAll(items);
@@ -312,7 +312,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return s.toString();
     }
 
-    private T updateIndex(int index, T item) {
+    private T updateIndex(int index, final T item) {
         T previousValue;
         int currentIndex = 0;
         Node currentHead = head;
