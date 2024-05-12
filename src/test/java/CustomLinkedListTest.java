@@ -2,7 +2,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -30,7 +29,7 @@ public class CustomLinkedListTest {
         Collection<Integer> values = new ArrayList<>();
         for(int i = 0; i < 5; i++)
             values.add(i);
-        LinkedList<Integer> list = new LinkedList<>(values);
+        CustomLinkedList<Integer> list = new CustomLinkedList<>(values);
         assertTrue(list.contains(0));
         assertTrue(list.contains(1));
         assertTrue(list.contains(2));
