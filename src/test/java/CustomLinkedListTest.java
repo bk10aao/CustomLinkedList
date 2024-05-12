@@ -36,6 +36,7 @@ public class CustomLinkedListTest {
         assertTrue(list.contains(2));
         assertTrue(list.contains(3));
         assertTrue(list.contains(4));
+        assertEquals(5, list.size());
     }
 
     @Test
