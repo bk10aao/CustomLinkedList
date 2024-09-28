@@ -710,8 +710,23 @@ public class CustomLinkedListTest {
         assertTrue(customLinkedList.add(1));
         assertTrue(customLinkedList.add(2));
         assertTrue(customLinkedList.add(3));
-
+        System.out.println(customLinkedList);
         CustomLinkedList<Integer> clone = customLinkedList.clone();
         assertEquals(customLinkedList, clone);
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_withValues_1_2_3_on_toString_returnsCorrectStringRepresentation() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        assertEquals("{ 1, 2, 3 }", customLinkedList.toString());
+    }
+
+    @Test
+    public void givenEmptyLinkedListOfType_Integer_returnsCorrectStringRepresentationOf_emptyCurlyBrackets() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertEquals("{ }", customLinkedList.toString());
     }
 }
