@@ -300,16 +300,20 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public String toString(){
-        StringBuilder s = new StringBuilder();
+        if(size == 0)
+            return "{ }";
+        StringBuilder s = new StringBuilder("{ ");
+        s.append(head.data).append(", ");
+
         if(head != null) {
             Node currentNode = head;
             while(currentNode.nextNode != null){
-                s.append(currentNode.data).append("\n");
                 currentNode = currentNode.nextNode;
+                s.append(currentNode.data).append(", ");
+
             }
-            s.append(currentNode.data);
         }
-        return s.toString();
+        return s.replace(s.lastIndexOf(", "), s.length(), " }").toString();
     }
 
     private T updateIndex(int index, final T item) {
