@@ -9,9 +9,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
 
     private int size = 0;
 
-    public CustomLinkedList() {
-
-    }
+    public CustomLinkedList() { }
 
     public CustomLinkedList(final Collection<T> items) {
         if(items == null)
@@ -93,7 +91,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     public boolean contains(final T item) {
         if(item == null)
             throw new NullPointerException();
-        return indexOf(item) > -1;
+        return indexOf(item) != -1;
     }
 
     public T element() {
@@ -180,7 +178,6 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
             return null;
         else if(size == 1)
             return head.data;
-
         Node current = head.nextNode;
         while(current.nextNode != null)
             current = current.nextNode;
