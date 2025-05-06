@@ -37,7 +37,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         Node node = head;
         for(int i = 0; i< index -1; i++)
             node = node.nextNode;
-        nodeToBeInserted.nextNode  = node.nextNode;
+        nodeToBeInserted.nextNode = node.nextNode;
         node.nextNode = nodeToBeInserted;
         size++;
     }
