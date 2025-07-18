@@ -120,3 +120,14 @@ Custom implementation of a singly LinkedList
 notes:
 - *n* = Number of elements in the list.
 - *m* = Number of elements in the input
+
+# Performance Charts
+
+## Custom Linked List vs Linked List
+![Combined Performance Charts](PerformanceTesting/CustomLinkedList_vs_LinkedList_Performance_Comparisons.png)
+
+## Custom Linked List
+![Combined Performance Charts](PerformanceTesting/CustomLinkedList_Performance_Charts.png)
+
+## Linked List
+![Combined Performance Charts](PerformanceTesting/LinkedList_Performance_Charts.png)
