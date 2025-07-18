@@ -78,6 +78,8 @@ Custom implementation of a singly LinkedList
 | `set(int, T)`                          |        O(n)         |          O(n)           |    Tie     |
 | `size()`                               |        O(1)         |          O(1)           |    Tie     |
 | `toArray()`                            |        O(n)         |          O(n)           |    Tie     |
+| `toString()`                           |        O(n)         |          O(n)           |    Tie     |
+
 
 # Space Complexity Comparison:
 
@@ -116,6 +118,8 @@ Custom implementation of a singly LinkedList
 | `set(int, T)`                          |        O(1)         |          O(1)           |    Tie     |
 | `size()`                               |        O(1)         |          O(1)           |    Tie     |
 | `toArray()`                            |        O(n)         |          O(n)           |    Tie     |
+| `toString()`                           |        O(n)         |          O(n)           |    Tie     |
+
 
 notes:
 - *n* = Number of elements in the list.
