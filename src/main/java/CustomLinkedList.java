@@ -6,39 +6,54 @@ import java.util.Objects;
 public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
 
     private Node head;
+    private Node tail;
 
     private int size = 0;
 
-    public CustomLinkedList() { }
+    public CustomLinkedList() {
+        head = tail = null;
+    }
 
     public CustomLinkedList(final Collection<T> items) {
         if(items == null)
-            throw new NullPointerException("Null collection not supported");
+            throw new NullPointerException("Input collection cannot be null");
+        head = tail = null;
         this.addAll(items);
     }
 
-    public boolean add(final T data){
-        if(this.head == null)
-            head = new Node(data);
-        else {
-            Node currentNode = head;
-            while(currentNode.nextNode != null)
-                currentNode = currentNode.nextNode;
-            currentNode.nextNode = new Node(data);
+    public boolean add(final T data) {
+        if(data == null)
+            throw new NullPointerException();
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.nextNode = newNode;
+            tail = newNode;
         }
         size++;
         return true;
     }
 
-    public void add(final int index, final T data){
+    public void add(final int index, final T data) {
+        if(data == null)
+            throw new NullPointerException();
         if(index < 0 || index > size)
             throw new IndexOutOfBoundsException();
-        Node nodeToBeInserted = new Node(data);
-        Node node = head;
-        for(int i = 0; i< index -1; i++)
-            node = node.nextNode;
-        nodeToBeInserted.nextNode  = node.nextNode;
-        node.nextNode = nodeToBeInserted;
+        Node newNode = new Node(data);
+        if (index == 0) {
+            newNode.nextNode = head;
+            head = newNode;
+            if (tail == null) tail = newNode;
+        } else {
+            Node prev = head;
+            for (int i = 0; i < index - 1; i++)
+                prev = prev.nextNode;
+            newNode.nextNode = prev.nextNode;
+            prev.nextNode = newNode;
+            if (index == size)
+                tail = newNode;
+        }
         size++;
     }
 
@@ -46,34 +61,61 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         if(collection == null)
             throw new NullPointerException();
         int startSize = size;
-        collection.forEach(this::add);
+        for (T item : collection)
+            add(item);
         return startSize != size;
     }
 
     public boolean addAll(final int index, final Collection<T> collection) {
-        if(collection == null)
+        if (collection == null)
             throw new NullPointerException();
-        if(index < 0 || index > size)
+        if (index < 0 || index > size)
             throw new IndexOutOfBoundsException();
-        int startSize = size;
-        int insertIndex = 0;
-        Node currentNode = head;
-        while(currentNode.nextNode != null) {
-            if(insertIndex == index) {
-                for (T item : collection)
-                    add(insertIndex++, item);
-                break;
-            }
-            insertIndex++;
-            currentNode = currentNode.nextNode;
+        if (collection.isEmpty())
+            return true;
+        Node first = null;
+        Node last = null;
+        for (T t : collection) {
+            if (t == null)
+                throw new NullPointerException("Collection elements cannot be null");
+            Node newNode = new Node(t);
+            if (first == null)
+                first = newNode;
+            else
+                last.nextNode = newNode;
+            last = newNode;
         }
-        return startSize != size;
+        if (index == 0) {
+            last.nextNode = head;
+            head = first;
+            if (size == 0)
+                tail = last;
+        } else {
+            Node previous = head;
+            if(previous == null)
+                throw new IllegalStateException();
+            for (int i = 0; i < index - 1; i++) {
+                if (previous.nextNode == null)
+                    throw new IllegalStateException();
+                previous = previous.nextNode;
+            }
+            last.nextNode = previous.nextNode;
+            previous.nextNode = first;
+            if (index == size)
+                tail = last;
+        }
+        size += collection.size();
+        return true;
     }
 
     public void addFirst(final T item) {
+        if(item == null)
+            throw new NullPointerException();
         Node newHead = new Node(item);
         newHead.nextNode = head;
         head = newHead;
+        if(tail == null)
+            tail = newHead;
         size++;
     }
 
@@ -83,8 +125,17 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
 
     public CustomLinkedList<T> clone() {
         CustomLinkedList<T> clone = new CustomLinkedList<>();
-        for (Node x = head; x != null; x = x.nextNode)
-            clone.add(x.data);
+        if (head == null)
+            return clone;
+        Node cloneHead = new Node(head.data);
+        clone.head = cloneHead;
+        Node cloneCurrent = cloneHead;
+        for (Node x = head.nextNode; x != null; x = x.nextNode) {
+            cloneCurrent.nextNode = new Node(x.data);
+            cloneCurrent = cloneCurrent.nextNode;
+        }
+        clone.tail = cloneCurrent;
+        clone.size = size;
         return clone;
     }
 
@@ -103,41 +154,41 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (getClass() != o.getClass())
-            return false;
+        if (!(o instanceof CustomLinkedList)) return false;
         CustomLinkedList<?> that = (CustomLinkedList<?>) o;
-        T[] firstArray = this.toArray();
-        T[] secondArray = (T[]) ((CustomLinkedList<?>) o).toArray();
-        for(int i = 0; i < firstArray.length; i++)
-            if (!firstArray[i].equals(secondArray[i]))
-                return false;
-        return size == that.size;
+        if (size != that.size) return false;
+        Node thisNode = head;
+        CustomLinkedList<?>.Node thatNode = that.head;
+        while (thisNode != null && thatNode != null) {
+            if (!Objects.equals(thisNode.data, thatNode.data)) return false;
+            thisNode = thisNode.nextNode;
+            thatNode = thatNode.nextNode;
+        }
+        return thisNode == null && thatNode == null;
     }
 
     public T get(final int index) {
-        if(index >= size || index < 0)
-            throw new IndexOutOfBoundsException();
-        if(index == 0)
-            return head.data;
-        Node current = head.nextNode;
-        if(index == size - 1)
-            while (current.nextNode != null)
-                current = current.nextNode;
-        else
-            for (int i = 0; i < index - 1; i++)
-                current = current.nextNode;
+        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            if (current == null) throw new IllegalStateException("List structure corrupted");
+            current = current.nextNode;
+        }
+        if (current == null) throw new IllegalStateException("List structure corrupted");
         return current.data;
     }
 
-    @Override
     public int hashCode() {
-        return Objects.hash(head, size);
+        int result = 1;
+        for (Node x = head; x != null; x = x.nextNode)
+            result = 31 * result + x.data.hashCode();
+        return result;
     }
 
     public int indexOf(final T item) {
         int index = 0;
         for (Node x = head; x != null; x = x.nextNode, index++)
-            if (x.data == item)
+            if (Objects.equals(x.data, item))
                 return index;
         return -1;
     }
@@ -146,7 +197,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         int foundIndex = -1;
         int index = 0;
         for (Node x = head; x != null; x = x.nextNode, index++)
-            if (x.data == item)
+            if (Objects.equals(x.data, item))
                 foundIndex = index;
         return foundIndex;
     }
@@ -157,16 +208,16 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
 
     public boolean offerFirst(final T item) {
         addFirst(item);
-        return head.data == item;
+        return Objects.equals(head.data, item);
     }
 
     public boolean offerLast(final T item) {
         addLast(item);
-        return get(size - 1).equals(item);
+        return Objects.equals(tail.data, item);
     }
 
     public T peek() {
-        return head.data;
+        return size == 0 ? null : head.data;
     }
 
     public T peekFirst() {
@@ -174,14 +225,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public T peekLast() {
-        if(size == 0)
-            return null;
-        else if(size == 1)
-            return head.data;
-        Node current = head.nextNode;
-        while(current.nextNode != null)
-            current = current.nextNode;
-        return current.data;
+        return size == 0 ? null : tail.data;
     }
 
     public T poll() {
@@ -189,6 +233,8 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
             return null;
         T headValue = head.data;
         head = head.nextNode;
+        if(head == null)
+            tail = null;
         size--;
         return headValue;
     }
@@ -200,9 +246,20 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     public T pollLast() {
         if(size == 0)
             return null;
-        T last = get(size - 1);
-        remove(size - 1);
-        return last;
+        if(size == 1) {
+            T data = head.data;
+            head = tail = null;
+            size = 0;
+            return data;
+        }
+        Node previous = head;
+        while(previous.nextNode != tail)
+            previous = previous.nextNode;
+        T data = tail.data;
+        previous.nextNode = null;
+        tail = previous;
+        size--;
+        return data;
     }
 
     public void push(final T item) {
@@ -222,12 +279,31 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public boolean remove(final int index) {
-        if(index > size || index < 0)
+        if(index >= size || index < 0)
             throw new IndexOutOfBoundsException();
-        Node node = head;
-        for(int i = 0; i < index -1; i++)
-            node = node.nextNode;
-        node.nextNode = node.nextNode.nextNode;
+        if(index == 0) {
+            if(head == null)
+                throw new IllegalStateException();
+            head = head.nextNode;
+            if(head == null)
+                tail = null;
+            size--;
+            return true;
+        }
+        Node previous = head;
+        if(previous == null)
+            throw new IllegalStateException();
+
+        for(int i = 0; i < index -1; i++) {
+            if(previous.nextNode == null)
+                throw new IllegalStateException();
+            previous = previous.nextNode;
+        }
+        if(previous.nextNode == null)
+            throw new IllegalStateException();
+        previous.nextNode = previous.nextNode.nextNode;
+        if (index == size - 1)
+            tail = previous;
         size--;
         return true;
     }
@@ -282,51 +358,34 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public T[] toArray() {
-        if(head != null) {
-            Object[] array = new Object[size];
-            int insertIndex = 0;
-            Node currentNode = head;
-            while(currentNode.nextNode != null){
-                array[insertIndex++] = currentNode.data;
-                currentNode = currentNode.nextNode;
-            }
-            array[insertIndex] = currentNode.data;
-            return (T[]) array;
-        }
-        return null;
+        Object[] array = new Object[size];
+        int index = 0;
+        for (Node x = head; x != null; x = x.nextNode)
+            array[index++] = x.data;
+        return (T[]) array;
     }
 
     public String toString(){
         if(size == 0)
             return "{ }";
-        StringBuilder s = new StringBuilder("{ ");
-        s.append(head.data).append(", ");
-
-        if(head != null) {
-            Node currentNode = head;
-            while(currentNode.nextNode != null){
-                currentNode = currentNode.nextNode;
-                s.append(currentNode.data).append(", ");
-
-            }
-        }
-        return s.replace(s.lastIndexOf(", "), s.length(), " }").toString();
+        StringBuilder stringBuilder = new StringBuilder("{ ");
+        for (Node x = head; x != null; x = x.nextNode)
+            stringBuilder.append(x.data).append(", ");
+        return stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), " }").toString();
     }
 
-    private T updateIndex(int index, final T item) {
-        T previousValue;
-        int currentIndex = 0;
-        Node currentHead = head;
-        while(currentHead.nextNode != null) {
-            if(currentIndex == index) {
-                previousValue = currentHead.data;
-                currentHead.data = item;
-                return previousValue;
-            }
-            currentHead = currentHead.nextNode;
-            currentIndex++;
+    private T updateIndex(final int index, final T item) {
+        Node current = head;
+        for(int i = 0; i < index; i++) {
+            if(current == null)
+                throw new IllegalStateException();
+            current = current.nextNode;
         }
-        return null;
+        if(current == null)
+            throw new IllegalStateException();
+        T previousValue = current.data;
+        current.data = item;
+        return previousValue;
     }
 
     private class Node {

@@ -40,3 +40,83 @@ Custom implementation of a singly LinkedList
 36. `int size()` - return size of list.
 37. `T[] toArray()` - return list as array.
 38. `String toString()` - return String representation of list.
+
+# Time Complexity Comparison:
+
+| **Method**                             | **Java LinkedList** | **CustomLinkedList<T>** | **Winner** |
+|----------------------------------------|:-------------------:|:-----------------------:|:----------:|
+| `add(T)`                               |        O(1)         |          O(1)           |    Tie     |
+| `add(int, T)`                          |        O(n)         |          O(n)           |    Tie     |
+| `addAll(Collection<? extends T>)`      |        O(m)         |          O(m)           |    Tie     |
+| `addAll(int, Collection<? extends T>)` |      O(n + m)       |        O(n + m)         |    Tie     |
+| `addFirst(T)`                          |        O(1)         |          O(1)           |    Tie     |
+| `addLast(T)`                           |        O(1)         |          O(1)           |    Tie     |
+| `clone()`                              |        O(n)         |          O(n)           |    Tie     |
+| `contains(Object)`                     |        O(n)         |          O(n)           |    Tie     |
+| `element()`                            |        O(1)         |          O(1)           |    Tie     |
+| `get(int)`                             |        O(n)         |          O(n)           |    Tie     |
+| `indexOf(Object)`                      |        O(n)         |          O(n)           |    Tie     |
+| `lastIndexOf(Object)`                  |        O(n)         |          O(n)           |    Tie     |
+| `offer(T)`                             |        O(1)         |          O(1)           |    Tie     |
+| `offerFirst(T)`                        |        O(1)         |          O(1)           |    Tie     |
+| `offerLast(T)`                         |        O(1)         |          O(1)           |    Tie     |
+| `peek()`                               |        O(1)         |          O(1)           |    Tie     |
+| `peekFirst()`                          |        O(1)         |          O(1)           |    Tie     |
+| `peekLast()`                           |        O(1)         |          O(1)           |    Tie     |
+| `poll()`                               |        O(1)         |          O(1)           |    Tie     |
+| `pollFirst()`                          |        O(1)         |          O(1)           |    Tie     |
+| `pollLast()`                           |        O(1)         |          O(n)           | LinkedList |
+| `push(T)`                              |        O(1)         |          O(1)           |    Tie     |
+| `pop()`                                |        O(1)         |          O(1)           |    Tie     |
+| `remove()`                             |        O(1)         |          O(1)           |    Tie     |
+| `remove(int)`                          |        O(n)         |          O(n)           |    Tie     |
+| `remove(Object)`                       |        O(n)         |          O(n)           |    Tie     |
+| `removeFirst()`                        |        O(1)         |          O(1)           |    Tie     |
+| `removeFirstOccurrence(Object)`        |        O(n)         |          O(n)           |    Tie     |
+| `removeLast()`                         |        O(1)         |          O(n)           | LinkedList |
+| `removeLastOccurrence(Object)`         |        O(n)         |          O(n)           |    Tie     |
+| `set(int, T)`                          |        O(n)         |          O(n)           |    Tie     |
+| `size()`                               |        O(1)         |          O(1)           |    Tie     |
+| `toArray()`                            |        O(n)         |          O(n)           |    Tie     |
+
+# Space Complexity Comparison:
+
+| **Method**                             | **Java LinkedList** | **CustomLinkedList<T>** | **Winner** |
+|----------------------------------------|:-------------------:|:-----------------------:|:----------:|
+| `add(T)`                               |        O(1)         |          O(1)           |    Tie     |
+| `add(int, T)`                          |        O(1)         |          O(1)           |    Tie     |
+| `addAll(Collection<? extends T>)`      |        O(m)         |          O(m)           |    Tie     |
+| `addAll(int, Collection<? extends T>)` |        O(m)         |          O(m)           |    Tie     |
+| `addFirst(T)`                          |        O(1)         |          O(1)           |    Tie     |
+| `addLast(T)`                           |        O(1)         |          O(1)           |    Tie     |
+| `clone()`                              |        O(n)         |          O(n)           |    Tie     |
+| `contains(Object)`                     |        O(1)         |          O(1)           |    Tie     |
+| `element()`                            |        O(1)         |          O(1)           |    Tie     |
+| `get(int)`                             |        O(1)         |          O(1)           |    Tie     |
+| `indexOf(Object)`                      |        O(1)         |          O(1)           |    Tie     |
+| `lastIndexOf(Object)`                  |        O(1)         |          O(1)           |    Tie     |
+| `offer(T)`                             |        O(1)         |          O(1)           |    Tie     |
+| `offerFirst(T)`                        |        O(1)         |          O(1)           |    Tie     |
+| `offerLast(T)`                         |        O(1)         |          O(1)           |    Tie     |
+| `peek()`                               |        O(1)         |          O(1)           |    Tie     |
+| `peekFirst()`                          |        O(1)         |          O(1)           |    Tie     |
+| `peekLast()`                           |        O(1)         |          O(1)           |    Tie     |
+| `poll()`                               |        O(1)         |          O(1)           |    Tie     |
+| `pollFirst()`                          |        O(1)         |          O(1)           |    Tie     |
+| `pollLast()`                           |        O(1)         |          O(1)           |    Tie     |
+| `push(T)`                              |        O(1)         |          O(1)           |    Tie     |
+| `pop()`                                |        O(1)         |          O(1)           |    Tie     |
+| `remove()`                             |        O(1)         |          O(1)           |    Tie     |
+| `remove(int)`                          |        O(1)         |          O(1)           |    Tie     |
+| `remove(Object)`                       |        O(1)         |          O(1)           |    Tie     |
+| `removeFirst()`                        |        O(1)         |          O(1)           |    Tie     |
+| `removeFirstOccurrence(Object)`        |        O(1)         |          O(1)           |    Tie     |
+| `removeLast()`                         |        O(1)         |          O(1)           |    Tie     |
+| `removeLastOccurrence(Object)`         |        O(1)         |          O(1)           |    Tie     |
+| `set(int, T)`                          |        O(1)         |          O(1)           |    Tie     |
+| `size()`                               |        O(1)         |          O(1)           |    Tie     |
+| `toArray()`                            |        O(n)         |          O(n)           |    Tie     |
+
+notes:
+- *n* = Number of elements in the list.
+- *m* = Number of elements in the input
