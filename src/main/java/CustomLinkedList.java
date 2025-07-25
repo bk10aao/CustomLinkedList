@@ -154,8 +154,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (!(o instanceof CustomLinkedList)) return false;
-        CustomLinkedList<?> that = (CustomLinkedList<?>) o;
+        if (!(o instanceof CustomLinkedList<?> that)) return false;
         if (size != that.size) return false;
         Node thisNode = head;
         CustomLinkedList<?>.Node thatNode = that.head;
@@ -221,7 +220,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public T peekFirst() {
-        return size == 0 ? null : peek();
+        return peek();
     }
 
     public T peekLast() {
@@ -275,7 +274,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     public T remove() {
         if(size == 0)
             throw new NoSuchElementException();
-        return pollFirst();
+        return poll();
     }
 
     public boolean remove(final int index) {
@@ -309,11 +308,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     }
 
     public T remove(final T item) {
-        if(contains(item)) {
-            remove(indexOf(item));
-            return item;
-        }
-        return null;
+        return contains(item) && remove(indexOf(item)) ? item: null;
     }
 
     public T removeFirst() {
@@ -325,7 +320,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     public boolean removeFirstOccurrence(final T item) {
         if(item == null || size == 0)
             return false;
-        return contains(item) ? remove(indexOf(item)) : false;
+        return contains(item) && remove(indexOf(item));
     }
 
     public T removeLast() {
@@ -337,7 +332,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
     public boolean removeLastOccurrence(final T item) {
         if(item == null || size == 0)
             return false;
-        return contains(item) ? remove(lastIndexOf(item)) : false;
+        return contains(item) && remove(lastIndexOf(item));
     }
 
     public T set(final int index, final T item) {
@@ -348,9 +343,8 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
             previousValue = head.data;
             head.data = item;
             return previousValue;
-        } else {
+        } else
             return updateIndex(index, item);
-        }
     }
 
     public int size() {
