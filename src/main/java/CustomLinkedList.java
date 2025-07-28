@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
+public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
 
     private Node head;
     private Node tail;
@@ -14,14 +14,14 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         head = tail = null;
     }
 
-    public CustomLinkedList(final Collection<T> items) {
+    public CustomLinkedList(final Collection<E> items) {
         if(items == null)
             throw new NullPointerException("Input collection cannot be null");
         head = tail = null;
         this.addAll(items);
     }
 
-    public boolean add(final T data) {
+    public boolean add(final E data) {
         if(data == null)
             throw new NullPointerException();
         Node newNode = new Node(data);
@@ -35,7 +35,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return true;
     }
 
-    public void add(final int index, final T data) {
+    public void add(final int index, final E data) {
         if(data == null)
             throw new NullPointerException();
         if(index < 0 || index > size)
@@ -57,16 +57,16 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         size++;
     }
 
-    public boolean addAll(final Collection<T> collection) {
+    public boolean addAll(final Collection<E> collection) {
         if(collection == null)
             throw new NullPointerException();
         int startSize = size;
-        for (T item : collection)
+        for (E item : collection)
             add(item);
         return startSize != size;
     }
 
-    public boolean addAll(final int index, final Collection<T> collection) {
+    public boolean addAll(final int index, final Collection<E> collection) {
         if (collection == null)
             throw new NullPointerException();
         if (index < 0 || index > size)
@@ -75,7 +75,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
             return true;
         Node first = null;
         Node last = null;
-        for (T t : collection) {
+        for (E t : collection) {
             if (t == null)
                 throw new NullPointerException("Collection elements cannot be null");
             Node newNode = new Node(t);
@@ -108,7 +108,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return true;
     }
 
-    public void addFirst(final T item) {
+    public void addFirst(final E item) {
         if(item == null)
             throw new NullPointerException();
         Node newHead = new Node(item);
@@ -119,12 +119,12 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         size++;
     }
 
-    public void addLast(final T item) {
+    public void addLast(final E item) {
         add(item);
     }
 
-    public CustomLinkedList<T> clone() {
-        CustomLinkedList<T> clone = new CustomLinkedList<>();
+    public CustomLinkedList<E> clone() {
+        CustomLinkedList<E> clone = new CustomLinkedList<>();
         if (head == null)
             return clone;
         Node cloneHead = new Node(head.data);
@@ -139,13 +139,13 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return clone;
     }
 
-    public boolean contains(final T item) {
+    public boolean contains(final E item) {
         if(item == null)
             throw new NullPointerException();
         return indexOf(item) != -1;
     }
 
-    public T element() {
+    public E element() {
         if(size == 0)
             throw new NoSuchElementException();
         return head.data;
@@ -166,7 +166,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return thisNode == null && thatNode == null;
     }
 
-    public T get(final int index) {
+    public E get(final int index) {
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
         Node current = head;
         for (int i = 0; i < index; i++) {
@@ -184,7 +184,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return result;
     }
 
-    public int indexOf(final T item) {
+    public int indexOf(final E item) {
         int index = 0;
         for (Node x = head; x != null; x = x.nextNode, index++)
             if (Objects.equals(x.data, item))
@@ -192,7 +192,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return -1;
     }
 
-    public int lastIndexOf(final T item) {
+    public int lastIndexOf(final E item) {
         int foundIndex = -1;
         int index = 0;
         for (Node x = head; x != null; x = x.nextNode, index++)
@@ -201,36 +201,36 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return foundIndex;
     }
 
-    public boolean offer(final T item) {
+    public boolean offer(final E item) {
         return add(item);
     }
 
-    public boolean offerFirst(final T item) {
+    public boolean offerFirst(final E item) {
         addFirst(item);
         return Objects.equals(head.data, item);
     }
 
-    public boolean offerLast(final T item) {
+    public boolean offerLast(final E item) {
         addLast(item);
         return Objects.equals(tail.data, item);
     }
 
-    public T peek() {
+    public E peek() {
         return size == 0 ? null : head.data;
     }
 
-    public T peekFirst() {
+    public E peekFirst() {
         return peek();
     }
 
-    public T peekLast() {
+    public E peekLast() {
         return size == 0 ? null : tail.data;
     }
 
-    public T poll() {
+    public E poll() {
         if(size == 0)
             return null;
-        T headValue = head.data;
+        E headValue = head.data;
         head = head.nextNode;
         if(head == null)
             tail = null;
@@ -238,15 +238,15 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return headValue;
     }
 
-    public T pollFirst() {
+    public E pollFirst() {
         return poll();
     }
 
-    public T pollLast() {
+    public E pollLast() {
         if(size == 0)
             return null;
         if(size == 1) {
-            T data = head.data;
+            E data = head.data;
             head = tail = null;
             size = 0;
             return data;
@@ -254,24 +254,24 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         Node previous = head;
         while(previous.nextNode != tail)
             previous = previous.nextNode;
-        T data = tail.data;
+        E data = tail.data;
         previous.nextNode = null;
         tail = previous;
         size--;
         return data;
     }
 
-    public void push(final T item) {
+    public void push(final E item) {
         addFirst(item);
     }
 
-    public T pop() {
+    public E pop() {
         if(size == 0)
             throw new NoSuchElementException();
         return poll();
     }
 
-    public T remove() {
+    public E remove() {
         if(size == 0)
             throw new NoSuchElementException();
         return poll();
@@ -307,38 +307,38 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return true;
     }
 
-    public T remove(final T item) {
+    public E remove(final E item) {
         return contains(item) && remove(indexOf(item)) ? item: null;
     }
 
-    public T removeFirst() {
+    public E removeFirst() {
         if(size == 0)
             throw new NoSuchElementException();
         return poll();
     }
 
-    public boolean removeFirstOccurrence(final T item) {
+    public boolean removeFirstOccurrence(final E item) {
         if(item == null || size == 0)
             return false;
         return contains(item) && remove(indexOf(item));
     }
 
-    public T removeLast() {
+    public E removeLast() {
         if(size == 0)
             throw new NoSuchElementException();
         return pollLast();
     }
 
-    public boolean removeLastOccurrence(final T item) {
+    public boolean removeLastOccurrence(final E item) {
         if(item == null || size == 0)
             return false;
         return contains(item) && remove(lastIndexOf(item));
     }
 
-    public T set(final int index, final T item) {
+    public E set(final int index, final E item) {
         if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
-        T previousValue;
+        E previousValue;
         if(index == 0) {
             previousValue = head.data;
             head.data = item;
@@ -351,12 +351,12 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return this.size;
     }
 
-    public T[] toArray() {
+    public E[] toArray() {
         Object[] array = new Object[size];
         int index = 0;
         for (Node x = head; x != null; x = x.nextNode)
             array[index++] = x.data;
-        return (T[]) array;
+        return (E[]) array;
     }
 
     public String toString(){
@@ -368,7 +368,7 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         return stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), " }").toString();
     }
 
-    private T updateIndex(final int index, final T item) {
+    private E updateIndex(final int index, final E item) {
         Node current = head;
         for(int i = 0; i < index; i++) {
             if(current == null)
@@ -377,17 +377,17 @@ public class CustomLinkedList<T> implements CustomLinkedListInterface<T> {
         }
         if(current == null)
             throw new IllegalStateException();
-        T previousValue = current.data;
+        E previousValue = current.data;
         current.data = item;
         return previousValue;
     }
 
     private class Node {
 
-        private T data;
+        private E data;
         private Node nextNode;
 
-        public Node(T data) {
+        public Node(E data) {
             this.data = data;
         }
     }
