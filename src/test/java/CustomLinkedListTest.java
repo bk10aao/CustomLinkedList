@@ -460,6 +460,12 @@ public class CustomLinkedListTest {
     }
 
     @Test
+    public void givenLinkedListOfType_Integer_onAddingEmptyCollection_returnsFalse() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertFalse(customLinkedList.addAll(new ArrayList<>()));
+    }
+
+    @Test
     public void givenLinkedListOfType_Integer_withValues_1_2_3_onAddAll_4_5_6_updatesListCorrectly() {
         CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
         assertTrue(customLinkedList.add(1));
@@ -704,16 +710,16 @@ public class CustomLinkedListTest {
         assertEquals(3, customLinkedList.get(5));
     }
 
-//    @Test
-//    public void givenEmptyLinkedListOfType_Integer_withValues_1_2_3_onClone_returnsMatchingLinkedList() {
-//        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
-//        assertTrue(customLinkedList.add(1));
-//        assertTrue(customLinkedList.add(2));
-//        assertTrue(customLinkedList.add(3));
-//        System.out.println(customLinkedList);
-//        CustomLinkedList<Integer> clone = customLinkedList.clone();
-//        assertEquals(customLinkedList, clone);
-//    }
+    @Test
+    public void givenEmptyLinkedListOfType_Integer_withValues_1_2_3_onClone_returnsMatchingLinkedList() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        assertTrue(customLinkedList.add(1));
+        assertTrue(customLinkedList.add(2));
+        assertTrue(customLinkedList.add(3));
+        System.out.println(customLinkedList);
+        CustomLinkedList<Integer> clone = customLinkedList.clone();
+        assertEquals(customLinkedList, clone);
+    }
 
     @Test
     public void givenLinkedListOfType_Integer_withValues_1_2_3_on_toString_returnsCorrectStringRepresentation() {
