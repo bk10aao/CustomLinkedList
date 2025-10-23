@@ -1,9 +1,10 @@
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
+public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterable<E> {
 
     private Node head;
     private Node tail;
@@ -16,7 +17,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
 
     public CustomLinkedList(final Collection<E> items) {
         if(items == null)
-            throw new NullPointerException("Input collection cannot be null");
+            throw new NullPointerException();
         head = tail = null;
         this.addAll(items);
     }
@@ -44,7 +45,8 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
         if (index == 0) {
             newNode.nextNode = head;
             head = newNode;
-            if (tail == null) tail = newNode;
+            if (tail == null)
+                tail = newNode;
         } else {
             Node prev = head;
             for (int i = 0; i < index - 1; i++)
@@ -60,7 +62,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     public boolean addAll(final Collection<E> collection) {
         if(collection == null)
             throw new NullPointerException();
-        if(collection.size() == 0)
+        if(collection.isEmpty())
             return false;
         Node first = null;
         Node last = null;
@@ -97,7 +99,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
         int mod = 0;
         for (E t : collection) {
             if (t == null)
-                throw new NullPointerException("Collection elements cannot be null");
+                throw new NullPointerException();
             Node newNode = new Node(t);
             if (first == null)
                 first = newNode;
@@ -109,12 +111,10 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
         if (index == 0) {
             last.nextNode = head;
             head = first;
-            if (size == 0)
+            if (isEmpty())
                 tail = last;
         } else {
             Node previous = head;
-            if(previous == null)
-                throw new IllegalStateException();
             for (int i = 0; i < index - 1; i++) {
                 if (previous.nextNode == null)
                     throw new IllegalStateException();
@@ -144,6 +144,11 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
         add(item);
     }
 
+    public void clear() {
+        head = tail = null;
+        size = 0;
+    }
+
     public CustomLinkedList<E> clone() {
         CustomLinkedList<E> clone = new CustomLinkedList<>();
         if (head == null)
@@ -167,12 +172,13 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public E element() {
-        if(size == 0)
+        if(isEmpty())
             throw new NoSuchElementException();
         return head.data;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean equals(final Object o) {
         if (this == o)
             return true;
@@ -181,7 +187,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
         if (size != that.size)
             return false;
         Node thisNode = head;
-        CustomLinkedList<?>.Node thatNode = that.head;
+        Node thatNode = (Node) that.head;
         while (thisNode != null && thatNode != null) {
             if (!Objects.equals(thisNode.data, thatNode.data))
                 return false;
@@ -197,10 +203,11 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
         Node current = head;
         for (int i = 0; i < index; i++) {
             if (current == null)
-                throw new IllegalStateException("List structure corrupted");
+                throw new IllegalStateException();
             current = current.nextNode;
         }
-        if (current == null) throw new IllegalStateException("List structure corrupted");
+        if (current == null)
+            throw new IllegalStateException();
         return current.data;
     }
 
@@ -217,6 +224,32 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
             if (Objects.equals(x.data, item))
                 return index;
         return -1;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public Iterator<E> iterator() {
+        return new ListIterator();
+    }
+
+    private class ListIterator implements Iterator<E> {
+        private Node current = head;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public E next() {
+            if (current == null)
+                throw new NoSuchElementException();
+            E data = current.data;
+            current = current.nextNode;
+            return data;
+        }
     }
 
     public int lastIndexOf(final E item) {
@@ -244,7 +277,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public E peek() {
-        return size == 0 ? null : head.data;
+        return isEmpty() ? null : head.data;
     }
 
     public E peekFirst() {
@@ -252,11 +285,11 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public E peekLast() {
-        return size == 0 ? null : tail.data;
+        return isEmpty() ? null : tail.data;
     }
 
     public E poll() {
-        if(size == 0)
+        if(isEmpty())
             return null;
         E headValue = head.data;
         head = head.nextNode;
@@ -271,7 +304,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public E pollLast() {
-        if(size == 0)
+        if(isEmpty())
             return null;
         if(size == 1) {
             E data = head.data;
@@ -294,23 +327,21 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public E pop() {
-        if(size == 0)
+        if(isEmpty())
             throw new NoSuchElementException();
         return poll();
     }
 
     public E remove() {
-        if(size == 0)
+        if(isEmpty())
             throw new NoSuchElementException();
         return poll();
     }
 
     public boolean remove(final int index) {
-        if(index >= size || index < 0)
+        if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
         if(index == 0) {
-            if(head == null)
-                throw new IllegalStateException();
             head = head.nextNode;
             if(head == null)
                 tail = null;
@@ -318,9 +349,6 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
             return true;
         }
         Node previous = head;
-        if(previous == null)
-            throw new IllegalStateException();
-
         for(int i = 0; i < index -1; i++) {
             if(previous.nextNode == null)
                 throw new IllegalStateException();
@@ -336,7 +364,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public E remove(final E item) {
-        if (item == null || size == 0)
+        if (item == null || isEmpty())
             return null;
         if (Objects.equals(head.data, item)) {
             E data = head.data;
@@ -362,13 +390,13 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public E removeFirst() {
-        if(size == 0)
+        if(isEmpty())
             throw new NoSuchElementException();
         return poll();
     }
 
     public boolean removeFirstOccurrence(final E item) {
-        if(item == null || size == 0)
+        if(item == null || isEmpty())
             return false;
         if (Objects.equals(head.data, item)) {
             head = head.nextNode;
@@ -392,13 +420,13 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public E removeLast() {
-        if(size == 0)
+        if(isEmpty())
             throw new NoSuchElementException();
         return pollLast();
     }
 
     public boolean removeLastOccurrence(final E item) {
-        if (item == null || size == 0)
+        if (item == null || isEmpty())
             return false;
         Node lastMatchPrev = null;
         Node lastMatch = null;
@@ -452,7 +480,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E> {
     }
 
     public String toString(){
-        if(size == 0)
+        if(isEmpty())
             return "{ }";
         StringBuilder stringBuilder = new StringBuilder("{ ");
         for (Node x = head; x != null; x = x.nextNode)

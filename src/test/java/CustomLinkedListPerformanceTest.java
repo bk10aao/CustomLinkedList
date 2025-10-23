@@ -13,8 +13,8 @@ public class CustomLinkedListPerformanceTest {
         long[][] results = new long[sizes.length][];
 
         String[] methodNames = {
-                "\"CustomLinkedList()\"",
-                "\"CustomLinkedList(Collection)\"",
+                "\"CustomDoublyLinkedList()\"",
+                "\"CustomDoublyLinkedList(Collection)\"",
                 "\"add(T)\"",
                 "\"add(int, T)\"",
                 "\"addAll(Collection)\"",

@@ -48,6 +48,11 @@ public interface CustomLinkedListInterface<E> {
     void addLast(final E item);
 
     /**
+     * Clear the link list setting size back to 0
+     */
+    void clear();
+
+    /**
      * Get a shallow clone of list.
      * @throws RuntimeException
      * @return CustomLinkedList<T> - clone of list.
@@ -97,6 +102,12 @@ public interface CustomLinkedListInterface<E> {
      * @return index of item in list if present, else -1.
      */
     int indexOf(final E item);
+
+    /**
+     * Check to see if the ist is empty
+     * @return true if list is empty
+     */
+    boolean isEmpty();
 
     /**
      * Get last index of item in list.

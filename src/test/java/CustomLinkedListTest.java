@@ -256,7 +256,7 @@ public class CustomLinkedListTest {
         CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
         customLinkedList.add(20);
         assertEquals(20, customLinkedList.poll());
-        assertEquals(0, customLinkedList.size());
+        assertTrue(customLinkedList.isEmpty());
     }
 
     @Test
@@ -734,5 +734,22 @@ public class CustomLinkedListTest {
     public void givenEmptyLinkedListOfType_Integer_returnsCorrectStringRepresentationOf_emptyCurlyBrackets() {
         CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
         assertEquals("{ }", customLinkedList.toString());
+    }
+
+    @Test
+    public void givenEmptyLinkedList_onClear_returnsEmptySet() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        customLinkedList.clear();
+        assertTrue(customLinkedList.isEmpty());
+    }
+
+    @Test
+    public void givenLinkedListOfType_Integer_with_1_2_onClear_clearsList() {
+        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
+        customLinkedList.add(1);
+        customLinkedList.add(2);
+        customLinkedList.clear();
+        assertEquals(0, customLinkedList.size());
+        assertTrue(customLinkedList.isEmpty());
     }
 }

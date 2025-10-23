@@ -128,10 +128,27 @@ notes:
 # Performance Charts
 
 ## Custom Linked List vs Linked List
-![Combined Performance Charts](PerformanceTesting/CustomLinkedList_vs_LinkedList_Performance_Comparisons.png)
-
-## Custom Linked List
-![Combined Performance Charts](PerformanceTesting/CustomLinkedList_Performance_Charts.png)
-
-## Linked List
-![Combined Performance Charts](PerformanceTesting/LinkedList_Performance_Charts.png)
+![Combined Performance Charts](PerformanceTesting/Constructor().png)
+![Combined Performance Charts](PerformanceTesting/Constructor(Collection).png)
+![Combined Performance Charts](PerformanceTesting/add(T).png)
+![Combined Performance Charts](PerformanceTesting/add(int,%20T).png)
+![Combined Performance Charts](PerformanceTesting/addAll(Collection).png)
+![Combined Performance Charts](PerformanceTesting/addAll(int,%20Collection).png)
+![Combined Performance Charts](PerformanceTesting/addFirst().png)
+![Combined Performance Charts](PerformanceTesting/addLast().png)
+![Combined Performance Charts](PerformanceTesting/clone().png)
+![Combined Performance Charts](PerformanceTesting/contains(T).png)
+![Combined Performance Charts](PerformanceTesting/equals(Object).png)
+![Combined Performance Charts](PerformanceTesting/get(int).png)
+![Combined Performance Charts](PerformanceTesting/hashCode().png)
+![Combined Performance Charts](PerformanceTesting/indexOf().png)
+![Combined Performance Charts](PerformanceTesting/lastIndexOf(T).png)
+![Combined Performance Charts](PerformanceTesting/offer(T).png)
+![Combined Performance Charts](PerformanceTesting/peek().png)
+![Combined Performance Charts](PerformanceTesting/poll().png)
+![Combined Performance Charts](PerformanceTesting/remove(T).png)
+![Combined Performance Charts](PerformanceTesting/removeFIrstOccurence(T).png)
+![Combined Performance Charts](PerformanceTesting/removeLastOccurence(T).png)
+![Combined Performance Charts](PerformanceTesting/set(int,%20T).png)
+![Combined Performance Charts](PerformanceTesting/toArray().png)
+![Combined Performance Charts](PerformanceTesting/toString().png)
