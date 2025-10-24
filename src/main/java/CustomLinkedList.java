@@ -4,6 +4,22 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+/**
+ * A custom singly-linked list implementation that maintains elements in insertion order.
+ * This list does not permit null elements and throws a {@link NullPointerException} when
+ * attempting to add null elements. It implements the {@link CustomLinkedListInterface}
+ * for standard list operations and supports iteration via {@link Iterable}.
+ * <p>
+ * This implementation provides O(1) time complexity for operations at the head (e.g.,
+ * {@code addFirst}, {@code removeFirst}) and O(n) for operations at the tail or indexed
+ * positions (e.g., {@code removeLast}, {@code get(int)}). It is not thread-safe.
+ * <p>
+ * @param <E> the type of elements maintained by this list
+ * @author Benjamin Kane
+ * @see <a href="https://www.linkedin.com/in/benjamin-kane-81149482/">LinkedIn Profile</a>
+ * @see <a href="https://github.com/bk10aao">GitHub Account</a>
+ * @see <a href="https://github.com/bk10aao/CustomLinkedList">Repository</a>
+ */
 public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterable<E> {
 
     private Node head;
@@ -11,10 +27,22 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
 
     private int size = 0;
 
+    /**
+     * Constructs an empty singly-linked list with no elements.
+     * Initializes the list with {@code size = 0}, {@code head = null}, and {@code tail = null}.
+     */
     public CustomLinkedList() {
         head = tail = null;
     }
 
+    /**
+     * Constructs a singly-linked list containing the elements of the specified collection,
+     * added in the order they are returned by the collection's iterator.
+     *
+     * @param items the collection of elements to add to the list
+     *
+     * @throws NullPointerException if the collection or any element is null
+     */
     public CustomLinkedList(final Collection<E> items) {
         if(items == null)
             throw new NullPointerException();
@@ -22,6 +50,15 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         this.addAll(items);
     }
 
+    /**
+     * Appends the specified element to the end of this list.
+     *
+     * @param data the element to be added to the list
+     *
+     * @return {@code true} (as specified by {@link java.util.List#add(Object)})
+     *
+     * @throws NullPointerException if the element is null
+     */
     public boolean add(final E data) {
         if(data == null)
             throw new NullPointerException();
@@ -36,6 +73,16 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return true;
     }
 
+    /**
+     * Inserts the specified element at the specified index in this list.
+     * Shifts the element currently at that position (if any) and any subsequent
+     * elements to the right (adds one to their indices).
+     *
+     * @param index the index at which to insert the element
+     * @param data the element to be inserted
+     * @throws NullPointerException if the element is null
+     * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index > size()})
+     */
     public void add(final int index, final E data) {
         if(data == null)
             throw new NullPointerException();
@@ -59,34 +106,40 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         size++;
     }
 
+    /**
+     * Appends all elements in the specified collection to the end of this list,
+     * in the order they are returned by the collection's iterator.
+     *
+     * @param collection the collection containing elements to be added
+     *
+     * @return {@code true} if this list changed as a result of the call, {@code false} if the collection is empty
+     *
+     * @throws NullPointerException if the collection or any element is null
+     */
     public boolean addAll(final Collection<E> collection) {
         if(collection == null)
             throw new NullPointerException();
         if(collection.isEmpty())
             return false;
-        Node first = null;
-        Node last = null;
-        int mod = 0;
-        for (E item : collection) {
-            if(item == null)
-                throw new NullPointerException();
-            Node node = new Node(item);
-            if(first == null)
-                first = node;
-            else
-                last.nextNode = node;
-            last = node;
-            mod++;
-        }
-        if(head == null)
-            head = first;
-        else
-            tail.nextNode = first;
-        tail = last;
-        size += mod;
+        for (E item : collection)
+            add(item);
         return true;
     }
 
+    /**
+     * Inserts all elements in the specified collection into this list at the specified index,
+     * in the order they are returned by the collection's iterator. Shifts the element currently
+     * at that position (if any) and any subsequent elements to the right.
+     *
+     * @param index the index at which to insert the first element from the collection
+     * @param collection the collection containing elements to be added
+     *
+     * @return {@code true} if this list changed as a result of the call, {@code false} if the collection is empty
+     *
+     * @throws NullPointerException if the collection or any element is null
+     * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index > size()})
+     * @throws IllegalStateException if the list structure is inconsistent during traversal
+     */
     public boolean addAll(final int index, final Collection<E> collection) {
         if (collection == null)
             throw new NullPointerException();
@@ -94,41 +147,19 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
             throw new IndexOutOfBoundsException();
         if (collection.isEmpty())
             return false;
-        Node first = null;
-        Node last = null;
-        int mod = 0;
-        for (E t : collection) {
-            if (t == null)
-                throw new NullPointerException();
-            Node newNode = new Node(t);
-            if (first == null)
-                first = newNode;
-            else
-                last.nextNode = newNode;
-            last = newNode;
-            mod++;
-        }
-        if (index == 0) {
-            last.nextNode = head;
-            head = first;
-            if (isEmpty())
-                tail = last;
-        } else {
-            Node previous = head;
-            for (int i = 0; i < index - 1; i++) {
-                if (previous.nextNode == null)
-                    throw new IllegalStateException();
-                previous = previous.nextNode;
-            }
-            last.nextNode = previous.nextNode;
-            previous.nextNode = first;
-            if (index == size)
-                tail = last;
-        }
-        size += mod;
+        int i = index;
+        for (E item : collection)
+            add(i++, item);
         return true;
     }
 
+    /**
+     * Inserts the specified element at the beginning of this list.
+     *
+     * @param item the element to be added to the head of the list
+     *
+     * @throws NullPointerException if the element is null
+     */
     public void addFirst(final E item) {
         if(item == null)
             throw new NullPointerException();
@@ -140,15 +171,37 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         size++;
     }
 
+    /**
+     * Appends the specified element to the end of this list.
+     * This method is equivalent to {@link #add(Object)}.
+     *
+     * @param item the element to be added to the end of the list
+     *
+     * @throws NullPointerException if the element is null
+     */
     public void addLast(final E item) {
         add(item);
     }
 
+    /**
+     * Removes all elements from this list, setting its size to zero and
+     * resetting the head and tail to {@code null}.
+     */
     public void clear() {
         head = tail = null;
         size = 0;
     }
 
+    /**
+     * Creates and returns a shallow copy of this {@code CustomLinkedList}.
+     * The new list contains the same elements as this list, in the same order,
+     * but modifications to the elements themselves (if mutable) will affect both lists.
+     * The internal structure (nodes) of the new list is independent of this list.
+     *
+     * @return a new {@code CustomLinkedList} instance containing all elements of this list
+     *
+     * @throws OutOfMemoryError if there is insufficient memory to create the clone
+     */
     public CustomLinkedList<E> clone() {
         CustomLinkedList<E> clone = new CustomLinkedList<>();
         if (head == null)
@@ -165,18 +218,47 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return clone;
     }
 
+    /**
+     * Returns {@code true} if this list contains the specified element.
+     * More formally, returns {@code true} if and only if this list contains at least
+     * one element {@code e} such that {@code Objects.equals(item, e)}.
+     *
+     * @param item the element to search for
+     *
+     * @return {@code true} if the element is present in the list, {@code false} otherwise
+     */
     public boolean contains(final E item) {
-        if(item == null)
-            throw new NullPointerException();
         return indexOf(item) != -1;
     }
 
+    /**
+     * Retrieves, but does not remove, the head (first element) of this list.
+     *
+     * @return the element at the head of the list
+     *
+     * @throws NoSuchElementException if the list is empty
+     */
     public E element() {
         if(isEmpty())
             throw new NoSuchElementException();
         return head.data;
     }
 
+    /**
+     * Compares the specified object with this list for equality.
+     * Returns {@code true} if and only if the specified object is also a
+     * {@code CustomLinkedList}, both lists have the same size, and all
+     * corresponding pairs of elements in the two lists are equal according to
+     * {@link Objects#equals(Object, Object)}. In other words, two lists are
+     * considered equal if they contain the same elements in the same order.
+     * This implementation allows comparison with any {@code CustomLinkedList}
+     * regardless of its generic type.
+     *
+     * @param o the object to be compared for equality with this list
+     *
+     * @return {@code true} if the specified object is equal to this list,
+     *         {@code false} otherwise
+     */
     @Override
     @SuppressWarnings("unchecked")
     public boolean equals(final Object o) {
@@ -197,8 +279,18 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return thisNode == null && thatNode == null;
     }
 
+    /**
+     * Returns the element at the specified index in this list.
+     *
+     * @param index the index of the element to return
+     *
+     * @return the element at the specified index
+     *
+     * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index >= size()})
+     * @throws IllegalStateException if the list structure is inconsistent (e.g., a node is unexpectedly null)
+     */
     public E get(final int index) {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= size())
             throw new IndexOutOfBoundsException();
         Node current = head;
         for (int i = 0; i < index; i++) {
@@ -211,6 +303,18 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return current.data;
     }
 
+    /**
+     * Returns the hash code value for this list.
+     * The hash code is computed based on the hash codes of all elements in the list,
+     * using the standard list hash code formula:
+     * {@code 1 + 31 * (element1.hashCode()) + 31^2 * (element2.hashCode()) + ...}.
+     * This ensures that {@code list1.equals(list2)} implies
+     * {@code list1.hashCode() == list2.hashCode()} for any two lists, as required
+     * by the general contract of {@link Object#hashCode()}.
+     *
+     * @return the hash code value for this list
+     */
+    @Override
     public int hashCode() {
         int result = 1;
         for (Node x = head; x != null; x = x.nextNode)
@@ -218,6 +322,15 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return result;
     }
 
+    /**
+     * Returns the index of the first occurrence of the specified element in this list,
+     * or -1 if the element is not present. Uses {@link Objects#equals(Object, Object)}
+     * for comparison.
+     *
+     * @param item the element to search for
+     *
+     * @return the index of the first occurrence of the element, or -1 if not found
+     */
     public int indexOf(final E item) {
         int index = 0;
         for (Node x = head; x != null; x = x.nextNode, index++)
@@ -226,33 +339,35 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return -1;
     }
 
+    /**
+     * Returns {@code true} if this list contains no elements.
+     *
+     * @return {@code true} if the list is empty, {@code false} otherwise
+     */
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * Returns an iterator over the elements in this list in proper sequence.
+     *
+     * @return an {@code Iterator} over the elements in this list
+     */
     public Iterator<E> iterator() {
         return new ListIterator();
     }
 
-    private class ListIterator implements Iterator<E> {
-        private Node current = head;
-
-        @Override
-        public boolean hasNext() {
-            return current != null;
-        }
-
-        @Override
-        public E next() {
-            if (current == null)
-                throw new NoSuchElementException();
-            E data = current.data;
-            current = current.nextNode;
-            return data;
-        }
-    }
-
+    /**
+     * Returns the index of the last occurrence of the specified element in this list,
+     * or -1 if the element is not present. Uses {@link Objects#equals(Object, Object)}
+     * for comparison.
+     *
+     * @param item the element to search for
+     * @return the index of the last occurrence of the element, or -1 if not found
+     */
     public int lastIndexOf(final E item) {
+        if (item == null)
+            throw new NullPointerException();
         int foundIndex = -1;
         int index = 0;
         for (Node x = head; x != null; x = x.nextNode, index++)
@@ -261,33 +376,84 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return foundIndex;
     }
 
+    /**
+     * Appends the specified element to the end of this list.
+     * This method is equivalent to {@link #add(Object)}.
+     *
+     * @param item the element to be added to the end of the list
+     *
+     * @return {@code true} (as specified by {@link java.util.Queue#offer(Object)})
+     *
+     * @throws NullPointerException if the element is null
+     */
     public boolean offer(final E item) {
         add(item);
         return true;
     }
 
+    /**
+     * Inserts the specified element at the beginning of this list.
+     * This method is equivalent to {@link #addFirst(Object)}.
+     *
+     * @param item the element to be added to the head of the list
+     *
+     * @return {@code true} (as specified by {@link java.util.Deque#offerFirst(Object)})
+     *
+     * @throws NullPointerException if the element is null
+     */
     public boolean offerFirst(final E item) {
         addFirst(item);
         return true;
     }
 
+    /**
+     * Appends the specified element to the end of this list.
+     * This method is equivalent to {@link #addLast(Object)}.
+     *
+     * @param item the element to be added to the end of the list
+     *
+     * @return {@code true} (as specified by {@link java.util.Deque#offerLast(Object)})
+     *
+     * @throws NullPointerException if the element is null
+     */
     public boolean offerLast(final E item) {
         addLast(item);
         return true;
     }
 
+    /**
+     * Retrieves, but does not remove, the head (first element) of this list.
+     *
+     * @return the element at the head of the list, or {@code null} if the list is empty
+     */
     public E peek() {
         return isEmpty() ? null : head.data;
     }
 
+    /**
+     * Retrieves, but does not remove, the head (first element) of this list.
+     * This method is equivalent to {@link #peek()}.
+     *
+     * @return the element at the head of the list, or {@code null} if the list is empty
+     */
     public E peekFirst() {
         return peek();
     }
 
+    /**
+     * Retrieves, but does not remove, the last element of this list.
+     *
+     * @return the element at the end of the list, or {@code null} if the list is empty
+     */
     public E peekLast() {
         return isEmpty() ? null : tail.data;
     }
 
+    /**
+     * Removes and returns the head (first element) of this list.
+     *
+     * @return the element at the head of the list, or {@code null} if the list is empty
+     */
     public E poll() {
         if(isEmpty())
             return null;
@@ -299,10 +465,21 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return headValue;
     }
 
+    /**
+     * Removes and returns the head (first element) of this list.
+     * This method is equivalent to {@link #poll()}.
+     *
+     * @return the element at the head of the list, or {@code null} if the list is empty
+     */
     public E pollFirst() {
         return poll();
     }
 
+    /**
+     * Removes and returns the last element of this list.
+     *
+     * @return the element at the end of the list, or {@code null} if the list is empty
+     */
     public E pollLast() {
         if(isEmpty())
             return null;
@@ -313,8 +490,11 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
             return data;
         }
         Node previous = head;
-        while(previous.nextNode != tail)
+        while(previous.nextNode != tail) {
+            if (previous.nextNode == null)
+                throw new IllegalStateException();
             previous = previous.nextNode;
+        }
         E data = tail.data;
         previous.nextNode = null;
         tail = previous;
@@ -322,22 +502,58 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return data;
     }
 
+    /**
+     * Inserts the specified element at the beginning of this list.
+     * This method is equivalent to {@link #addFirst(Object)}.
+     *
+     * @param item the element to be added to the head of the list
+     *
+     * @throws NullPointerException if the element is null
+     */
     public void push(final E item) {
         addFirst(item);
     }
 
+    /**
+     * Removes and returns the head (first element) of this list.
+     * This method is equivalent to {@link #poll()} but throws an exception if the list is empty.
+     *
+     * @return the element at the head of the list
+     *
+     * @throws NoSuchElementException if the list is empty
+     */
     public E pop() {
         if(isEmpty())
             throw new NoSuchElementException();
         return poll();
     }
 
+    /**
+     * Removes and returns the head (first element) of this list.
+     * This method is equivalent to {@link #poll()} but throws an exception if the list is empty.
+     *
+     * @return the element at the head of the list
+     *
+     * @throws NoSuchElementException if the list is empty
+     */
     public E remove() {
         if(isEmpty())
             throw new NoSuchElementException();
         return poll();
     }
 
+    /**
+     * Removes the element at the specified index in this list.
+     * Shifts any subsequent elements to the left (subtracts one from their indices).
+     *
+     * @param index the index of the element to be removed
+     *
+     * @return {@code true} if the element was successfully removed
+     *
+     * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index >= size()})
+     * @throws IllegalStateException if the list structure is inconsistent
+     *         (e.g., a node is unexpectedly null during traversal)
+     */
     public boolean remove(final int index) {
         if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
@@ -363,6 +579,14 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return true;
     }
 
+    /**
+     * Removes the first occurrence of the specified element from this list, if present.
+     * If the element is not found, the list is unchanged.
+     *
+     * @param item the element to be removed
+     *
+     * @return the element that was removed, or {@code null} if the element was not found or the input is null
+     */
     public E remove(final E item) {
         if (item == null || isEmpty())
             return null;
@@ -389,12 +613,29 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return null;
     }
 
+    /**
+     * Removes and returns the head (first element) of this list.
+     * This method is equivalent to {@link #poll()} but throws an exception if the list is empty.
+     *
+     * @return the element at the head of the list
+     *
+     * @throws NoSuchElementException if the list is empty
+     */
     public E removeFirst() {
         if(isEmpty())
             throw new NoSuchElementException();
         return poll();
     }
 
+    /**
+     * Removes the first occurrence of the specified element from this list, if present.
+     * If the element is not found, the list is unchanged.
+     *
+     * @param item the element to be removed
+     *
+     * @return {@code true} if the element was found and removed, {@code false} if the element is null,
+     *         the list is empty, or the element is not found
+     */
     public boolean removeFirstOccurrence(final E item) {
         if(item == null || isEmpty())
             return false;
@@ -419,12 +660,28 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return false;
     }
 
+    /**
+     * Removes and returns the last element of this list.
+     *
+     * @return the element that was removed
+     *
+     * @throws NoSuchElementException if the list is empty
+     */
     public E removeLast() {
         if(isEmpty())
             throw new NoSuchElementException();
         return pollLast();
     }
 
+    /**
+     * Removes the last occurrence of the specified element from this list, if present.
+     * If the element is not found, the list is unchanged.
+     *
+     * @param item the element to be removed
+     *
+     * @return {@code true} if the element was found and removed, {@code false} if the element is null,
+     *         the list is empty, or the element is not found
+     */
     public boolean removeLastOccurrence(final E item) {
         if (item == null || isEmpty())
             return false;
@@ -455,7 +712,21 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return true;
     }
 
+    /**
+     * Replaces the element at the specified index in this list with the specified element.
+     *
+     * @param index the index of the element to replace
+     * @param item the new element to set at the specified index
+     *
+     * @return the previous element at the specified index
+     *
+     * @throws NullPointerException if the element is null
+     * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index >= size()})
+     * @throws IllegalStateException if the list structure is inconsistent (e.g., a node is unexpectedly null)
+     */
     public E set(final int index, final E item) {
+        if (item == null)
+            throw new NullPointerException();
         if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
         E previousValue;
@@ -467,10 +738,24 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
             return updateIndex(index, item);
     }
 
+    /**
+     * Returns the number of elements in this list.
+     *
+     * @return the number of elements in this list
+     */
     public int size() {
         return this.size;
     }
 
+    /**
+     * Returns an array containing all elements in this list in proper sequence
+     * (from head to tail).
+     *
+     * @return an array containing the elements of this list
+     *
+     * @throws ArrayStoreException if the runtime type of the array elements is not
+     *         compatible with the type of the elements in this list
+     */
     public E[] toArray() {
         Object[] array = new Object[size];
         int index = 0;
@@ -479,6 +764,16 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return (E[]) array;
     }
 
+    /**
+     * Returns a string representation of this list.
+     * The string representation consists of the elements of the list in order,
+     * enclosed in curly braces ({@code "{ }"}). Adjacent elements are separated
+     * by a comma and a space ({@code ", "}). If the list is empty, returns
+     * {@code "{ }"}.
+     *
+     * @return a string representation of this list
+     */
+    @Override
     public String toString(){
         if(isEmpty())
             return "{ }";
@@ -488,7 +783,21 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), " }").toString();
     }
 
+    /**
+     * Replaces the element at the specified index with the specified element and
+     * returns the previous element.
+     *
+     * @param index the index of the element to replace
+     * @param item the new element to set
+     *
+     * @return the previous element at the specified index
+     *
+     * @throws NullPointerException if the element is null
+     * @throws IllegalStateException if the list structure is inconsistent (e.g., a node is unexpectedly null)
+     */
     private E updateIndex(final int index, final E item) {
+        if(item == null)
+            throw new NullPointerException();
         Node current = head;
         for(int i = 0; i < index; i++) {
             if(current == null)
@@ -509,6 +818,66 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
 
         public Node(E data) {
             this.data = data;
+        }
+    }
+
+    /**
+     * An iterator over the elements in this list in proper sequence.
+     */
+    private class ListIterator implements Iterator<E> {
+        private Node current = head;
+        private Node previous = null;
+        private Node prevPrevious = null;
+
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         *
+         * @return {@code true} if there are more elements to iterate
+         */
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the list
+         * @throws NoSuchElementException if there are no more elements
+         */
+        @Override
+        public E next() {
+            if (current == null)
+                throw new NoSuchElementException();
+            prevPrevious = previous;
+            previous = current;
+            E data = current.data;
+            current = current.nextNode;
+            return data;
+        }
+
+        /**
+         * Removes the last element returned by {@link #next()} from the list.
+         * This method can only be called once per call to {@link #next()}.
+         *
+         * @throws IllegalStateException if {@link #next()} has not been called, or
+         *         {@link #remove()} has already been called after the last call to {@link #next()}
+         */
+        @Override
+        public void remove() {
+            if (previous == null)
+                throw new IllegalStateException("next() must be called before remove()");
+            if (prevPrevious == null) {
+                head = current;
+                if (head == null)
+                    tail = null;
+            } else {
+                prevPrevious.nextNode = current;
+                if (current == null)
+                    tail = prevPrevious;
+            }
+            size--;
+            previous = null;
         }
     }
 }

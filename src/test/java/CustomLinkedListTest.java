@@ -206,12 +206,12 @@ public class CustomLinkedListTest {
     }
 
     @Test
-    public void givenLinkedListOfValues_10_20_30_onContains_null_throws_nullPointerException() {
+    public void givenLinkedListOfValues_10_20_30_onContains_returns_negativeOne() {
         CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>();
         customLinkedList.add(10);
         customLinkedList.add(20);
         customLinkedList.add(30);
-        assertThrows(NullPointerException.class, () -> customLinkedList.contains(null));
+        assertEquals(false,  customLinkedList.contains(null));
     }
 
     @Test
