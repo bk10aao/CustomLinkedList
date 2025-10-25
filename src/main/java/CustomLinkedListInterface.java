@@ -198,9 +198,9 @@ public interface CustomLinkedListInterface<E> {
      * remove item from start of List.
      * @throws IndexOutOfBoundsException on index less than 0.
      * @throws IndexOutOfBoundsException on index bigger than or equal to size().
-     * @return boolean - return true if removed else false.
+     * @return E - return item from list.
      */
-    boolean remove(int position);
+    E remove(int position);
 
     /**
      * Removes item from list.

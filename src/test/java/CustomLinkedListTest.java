@@ -107,7 +107,7 @@ public class CustomLinkedListTest {
         assertTrue(customLinkedList.add(1));
         assertTrue(customLinkedList.add(2));
         assertTrue(customLinkedList.add(3));
-        assertTrue(customLinkedList.remove(2));
+        assertEquals(3, customLinkedList.remove(2));
         assertEquals(2, customLinkedList.size());
         assertEquals(1, customLinkedList.get(0));
         assertEquals(2, customLinkedList.get(1));
@@ -120,7 +120,7 @@ public class CustomLinkedListTest {
         assertTrue(customLinkedList.add(1));
         assertTrue(customLinkedList.add(2));
         assertTrue(customLinkedList.add(3));
-        assertTrue(customLinkedList.remove(1));
+        assertEquals(2, customLinkedList.remove(1));
         assertEquals(2, customLinkedList.size());
     }
 
