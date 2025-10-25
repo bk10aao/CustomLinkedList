@@ -501,18 +501,6 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
     }
 
     /**
-     * Inserts the specified element at the beginning of this list.
-     * This method is equivalent to {@link #addFirst(Object)}.
-     *
-     * @param item the element to be added to the head of the list
-     *
-     * @throws NullPointerException if the element is null
-     */
-    public void push(final E item) {
-        addFirst(item);
-    }
-
-    /**
      * Removes and returns the head (first element) of this list.
      * This method is equivalent to {@link #poll()} but throws an exception if the list is empty.
      *
@@ -524,6 +512,18 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         if(isEmpty())
             throw new NoSuchElementException();
         return poll();
+    }
+
+    /**
+     * Inserts the specified element at the beginning of this list.
+     * This method is equivalent to {@link #addFirst(Object)}.
+     *
+     * @param item the element to be added to the head of the list
+     *
+     * @throws NullPointerException if the element is null
+     */
+    public void push(final E item) {
+        addFirst(item);
     }
 
     /**
