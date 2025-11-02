@@ -1,6 +1,5 @@
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -14,8 +13,11 @@ import java.util.Objects;
  * {@code addFirst}, {@code removeFirst}) and O(n) for operations at the tail or indexed
  * positions (e.g., {@code removeLast}, {@code get(int)}). It is not thread-safe.
  * <p>
+ *
  * @param <E> the type of elements maintained by this list
+ *
  * @author Benjamin Kane
+ *
  * @see <a href="https://www.linkedin.com/in/benjamin-kane-81149482/">LinkedIn Profile</a>
  * @see <a href="https://github.com/bk10aao">GitHub Account</a>
  * @see <a href="https://github.com/bk10aao/CustomLinkedList">Repository</a>
@@ -727,9 +729,8 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
             throw new NullPointerException();
         if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
-        E previousValue;
         if(index == 0) {
-            previousValue = head.data;
+            E previousValue = head.data;
             head.data = item;
             return previousValue;
         } else
