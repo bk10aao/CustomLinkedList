@@ -483,12 +483,6 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
     public E pollLast() {
         if(isEmpty())
             return null;
-        if(size == 1) {
-            E data = head.data;
-            head = tail = null;
-            size = 0;
-            return data;
-        }
         Node previous = head;
         while(previous.nextNode != tail) {
             if (previous.nextNode == null)
@@ -557,25 +551,15 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
         E removedValue;
-        if (index == 0) {
-            removedValue = head.data;
-            head = head.nextNode;
-            if (head == null)
-                tail = null;
-        } else {
-            Node previous = head;
-            for (int i = 0; i < index - 1; i++) {
-                if (previous.nextNode == null)
-                    throw new IllegalStateException();
-                previous = previous.nextNode;
-            }
-            if (previous.nextNode == null)
-                throw new IllegalStateException();
-            removedValue = previous.nextNode.data;
-            previous.nextNode = previous.nextNode.nextNode;
-            if (index == size - 1)
-                tail = previous;
-        }
+        if (index == 0)
+            return pollLast();
+        Node previous = head;
+        for (int i = 0; i < index - 1; i++)
+            previous = previous.nextNode;
+        removedValue = previous.nextNode.data;
+        previous.nextNode = previous.nextNode.nextNode;
+        if (index == size - 1)
+            tail = previous;
         size--;
         return removedValue;
     }
