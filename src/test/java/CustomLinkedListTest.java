@@ -529,21 +529,21 @@ public class CustomLinkedListTest {
     }
 
     @Test
-    public void givenLinkedListOfType_String_withValues_a_b_c_onRemoveObject_d_returns_null() {
+    public void givenLinkedListOfType_String_withValues_a_b_c_onRemoveObject_d_returns_false() {
         CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
         assertTrue(customLinkedList.add("a"));
         assertTrue(customLinkedList.add("b"));
         assertTrue(customLinkedList.add("c"));
-        assertNull(customLinkedList.remove("d"));
+        assertFalse(customLinkedList.remove("d"));
     }
 
     @Test
-    public void givenLinkedListOfType_String_withValues_a_b_c_onRemoveObject_b_returns_b_andRemoveItFromList() {
+    public void givenLinkedListOfType_String_withValues_a_b_c_onRemoveObject_b_returns_true_andRemoveItFromList() {
         CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
         assertTrue(customLinkedList.add("a"));
         assertTrue(customLinkedList.add("b"));
         assertTrue(customLinkedList.add("c"));
-        assertEquals("b", customLinkedList.remove("b"));
+        assertEquals(true, customLinkedList.remove("b"));
         assertEquals("a", customLinkedList.get(0));
         assertEquals("c", customLinkedList.get(1));
     }
