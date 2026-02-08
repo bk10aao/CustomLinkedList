@@ -154,49 +154,6 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
     }
 
     /**
-     * Removes from this list all elements that are contained in the specified collection.
-     *
-     * @param c collection containing elements to be removed from this list
-     *
-     * @return {@code true} if this list changed
-     * @see Collection#contains(Object)
-     */
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        if (c.isEmpty())
-            return false;
-        final Set<?> remove = (c instanceof Set<?>) ? (Set<?>) c : new HashSet<>(c);
-        boolean modified = false;
-        for (Node<E> node = head, next; node != null; node = next) {
-            next = node.nextNode;
-            if (remove.contains(node.data)) {
-                remove(node);
-                modified = true;
-            }
-        }
-        return modified;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        if (c.isEmpty()) {
-            boolean modified = !isEmpty();
-            clear();
-            return modified;
-        }
-        Set<?> retain = (c instanceof Set<?> s) ? s : new HashSet<>(c);
-        boolean modified = false;
-        for (Node<E> node = head, next; node != null; node = next) {
-            next = node.nextNode;
-            if (!retain.contains(node.data)) {
-                remove(node);
-                modified = true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Inserts the specified element at the beginning of this list.
      *
      * @param item the element to be added to the head of the list
@@ -275,6 +232,23 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
     }
 
     /**
+     * Returns {@code true} if this list contains all elements in Collection.
+     *
+     * @param c collection to check for all values in CustomList
+     *
+     * @return {@code true} if this list contains all elements in collection
+     *
+     * @throws NullPointerException if the specified collection or any of its elements is null
+     */
+    public boolean containsAll(final Collection<?> c) {
+        Set<?> values = (c instanceof Set<?> s) ? s : new HashSet<>(c);
+        for(Object o : values)
+            if (!contains(o))
+                return false;
+        return true;
+    }
+
+    /**
      * Retrieves, but does not remove, the head (first element) of this list.
      *
      * @return the element at the head of the list
@@ -302,7 +276,6 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
      * @return {@code true} if the specified object is equal to this list,
      *         {@code false} otherwise
      */
-    @Override
     @SuppressWarnings("unchecked")
     public boolean equals(final Object o) {
         if (this == o)
@@ -357,7 +330,6 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
      *
      * @return the hash code value for this list
      */
-    @Override
     public int hashCode() {
         int result = 1;
         for (Node x = head; x != null; x = x.nextNode)
@@ -418,13 +390,25 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
         return foundIndex;
     }
 
-    @Override
+    /**
+     * Returns an iterator over the elements in this list in proper sequence.
+     *
+     * @return {@code ListIterator} over the elements in this list in proper sequence
+     */
     public ListIterator<E> listIterator() {
         return new CustomListIterator(0);
     }
 
-    @Override
-    public ListIterator<E> listIterator(int index) {
+    /**
+     * Returns an iterator over the elements in this list in proper sequence.
+     *
+     * @param index the index of the start of List Iterator
+     *
+     * @return {@code ListIterator} over the elements in this list in proper sequence
+     *
+     * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index >= size()})
+     */
+    public ListIterator<E> listIterator(final int index) {
         if(index < 0 || index > size)
             throw new IndexOutOfBoundsException();
         return new CustomListIterator(index);
@@ -601,7 +585,6 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
      * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index >= size()})
      * @throws IllegalStateException if the list structure is inconsistent
      */
-    @Override
     public E remove(final int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
@@ -644,30 +627,27 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
         return false;
     }
 
-    private boolean unlink(Node<E> node) {
-        node.nextNode = node.nextNode.nextNode;
-        if (node.nextNode == null)
-            tail = node;
-        size--;
-        return true;
-    }
-
     /**
-     * Returns {@code true} if this list contains all elements in Collection.
+     * Removes from this list all elements that are contained in the specified collection.
      *
-     * @param c collection to check for all values in CustomList
+     * @param c collection containing elements to be removed from this list
      *
-     * @return {@code true} if this list contains all elements in collection
-     *
-     * @throws NullPointerException if the specified collection or any of its elements is null
+     * @return {@code true} if this list changed
+     * @see Collection#contains(Object)
      */
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        Set<?> values = (c instanceof Set<?> s) ? s : new HashSet<>(c);
-        for(Object o : values)
-            if (!contains(o))
-                return false;
-        return true;
+    public boolean removeAll(final Collection<?> c) {
+        if (c.isEmpty())
+            return false;
+        final Set<?> remove = (c instanceof Set<?>) ? (Set<?>) c : new HashSet<>(c);
+        boolean modified = false;
+        for (Node<E> node = head, next; node != null; node = next) {
+            next = node.nextNode;
+            if (remove.contains(node.data)) {
+                remove(node);
+                modified = true;
+            }
+        }
+        return modified;
     }
 
     /**
@@ -762,6 +742,34 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
         }
         size--;
         return true;
+    }
+
+    /**
+     * Retains only the elements in this list that are contained in the specified collection.
+     * In other words, removes from this list all of its elements that are not contained in {@code c}.
+     *
+     * @param c collection containing elements to be retained in this list
+     *
+     * @return {@code true} if this list changed as a result of the call
+     *
+     * @throws NullPointerException if {@code c} is null or contains null
+     */
+    public boolean retainAll(final Collection<?> c) {
+        if (c.isEmpty()) {
+            boolean modified = !isEmpty();
+            clear();
+            return modified;
+        }
+        Set<?> retain = (c instanceof Set<?> s) ? s : new HashSet<>(c);
+        boolean modified = false;
+        for (Node<E> node = head, next; node != null; node = next) {
+            next = node.nextNode;
+            if (!retain.contains(node.data)) {
+                remove(node);
+                modified = true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -866,11 +874,10 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
      *
      * @return a string representation of this list
      */
-    @Override
     public String toString(){
         if(isEmpty())
-            return "{ }";
-        StringBuilder stringBuilder = new StringBuilder("{ ");
+            return "[]";
+        StringBuilder stringBuilder = new StringBuilder("[");
         boolean first = true;
         for (Node x = head; x != null; x = x.nextNode) {
             if (!first)
@@ -878,7 +885,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
             stringBuilder.append(x.data);
             first = false;
         }
-        return stringBuilder.append(" }").toString();
+        return stringBuilder.append("]").toString();
     }
 
     /**
@@ -889,7 +896,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
      *
      * @throws IllegalStateException if the list structure is inconsistent (e.g., a node is unexpectedly null)
      */
-    private void insert(int index, Node newNode) {
+    private void insert(int index, final Node newNode) {
         Node prev = head;
         for (int i = 0; i < index - 1; i++) {
             if (prev == null)
@@ -900,6 +907,20 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
         prev.nextNode = newNode;
         if (index == size)
             tail = newNode;
+    }
+
+    /**
+     * Unlinks the node from neighbours and decreases the size by 1.
+     *
+     * @param node to be unlinked
+     * @return true
+     */
+    private boolean unlink(final Node<E> node) {
+        node.nextNode = node.nextNode.nextNode;
+        if (node.nextNode == null)
+            tail = node;
+        size--;
+        return true;
     }
 
     /**
@@ -932,7 +953,6 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
 
     /**
      * A node in the singly-linked list, containing an element.
-     *
      */
     private static class Node<E> {
 
@@ -971,30 +991,25 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
             if (index == size) {
                 next = null;
                 prev = head;
-                for (int i = 1; i < size; i++) {
+                for (int i = 1; i < size; i++)
                     prev = prev.nextNode;
-                }
                 return;
             }
 
             Node<E> current = head;
-            for (int i = 0; i < index; i++) {
+            for (int i = 0; i < index; i++)
                 current = current.nextNode;
-            }
             next = current;
             prev = (index == 0) ? null : getNodeAt(index - 1);
         }
 
-        @Override
         public boolean hasNext() {
             return next != null;
         }
 
-        @Override
         public E next() {
-            if (!hasNext()) {
+            if (!hasNext())
                 throw new NoSuchElementException();
-            }
             lastReturned = next;
             prev = lastReturned;
             next = next.nextNode;
@@ -1002,12 +1017,10 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
             return lastReturned.data;
         }
 
-        @Override
         public boolean hasPrevious() {
             return prev != null;
         }
 
-        @Override
         public E previous() {
             if (!hasPrevious()) {
                 throw new NoSuchElementException();
@@ -1019,75 +1032,60 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
             return lastReturned.data;
         }
 
-        @Override
         public int nextIndex() {
             return nextIndex;
         }
 
-        @Override
         public int previousIndex() {
             return nextIndex - 1;
         }
 
-        @Override
         public void remove() {
-            if (lastReturned == null) {
+            if (lastReturned == null)
                 throw new IllegalStateException();
-            }
 
             if (lastReturned == head) {
                 head = head.nextNode;
-                if (head == null) {
+                if (head == null)
                     tail = null;
-                }
             } else {
                 Node<E> before = (prev == lastReturned) ? getNodeAt(nextIndex - 2) : prev;
-                if (before == null) {
+                if (before == null)
                     throw new IllegalStateException();
-                }
                 before.nextNode = lastReturned.nextNode;
-                if (lastReturned == tail) {
+                if (lastReturned == tail)
                     tail = before;
-                }
             }
-
-            if (next == lastReturned) {
+            if (next == lastReturned)
                 next = lastReturned.nextNode;
-            } else {
+            else
                 nextIndex--;
-            }
-
             lastReturned = null;
             size--;
         }
 
-        @Override
         public void set(E e) {
-            if (lastReturned == null) {
+            if (lastReturned == null)
                 throw new IllegalStateException();
-            }
-            if (e == null) {
+            if (e == null)
                 throw new NullPointerException();
-            }
             lastReturned.data = e;
         }
 
-        @Override
         public void add(E e) {
-            if (e == null) {
+            if (e == null)
                 throw new NullPointerException();
-            }
 
             Node<E> newNode = new Node<>(e);
 
-            if (next == null) {
-                if (tail == null) {
+            if (next == null)
+                if (tail == null)
                     head = tail = newNode;
-                } else {
+                else {
                     tail.nextNode = newNode;
                     tail = newNode;
                 }
-            } else if (next == head) {
+            else if (next == head) {
                 newNode.nextNode = head;
                 head = newNode;
             } else {
@@ -1102,14 +1100,12 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
         }
 
         private Node<E> getNodeAt(int index) {
-            if (index < 0 || index >= size) {
+            if (index < 0 || index >= size)
                 return null;
-            }
-            Node<E> n = head;
-            for (int i = 0; i < index; i++) {
-                n = n.nextNode;
-            }
-            return n;
+            Node<E> node = head;
+            for (int i = 0; i < index; i++)
+                node = node.nextNode;
+            return node;
         }
     }
 }
