@@ -1,3 +1,4 @@
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -24,10 +25,13 @@ import java.util.Objects;
  */
 public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterable<E> {
 
-    private Node head;
-    private Node tail;
+    private transient Node head;
+    private transient Node tail;
 
-    private int size = 0;
+    private transient int size = 0;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Constructs an empty singly-linked list with no elements.
