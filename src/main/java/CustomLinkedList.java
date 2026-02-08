@@ -93,16 +93,7 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
             if (tail == null)
                 tail = newNode;
         } else {
-            Node prev = head;
-            for (int i = 0; i < index - 1; i++) {
-                if (prev == null)
-                    throw new IllegalStateException();
-                prev = prev.nextNode;
-            }
-            newNode.nextNode = prev.nextNode;
-            prev.nextNode = newNode;
-            if (index == size)
-                tail = newNode;
+            insert(index, newNode);
         }
         size++;
     }
@@ -779,9 +770,35 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         if(isEmpty())
             return "{ }";
         StringBuilder stringBuilder = new StringBuilder("{ ");
-        for (Node x = head; x != null; x = x.nextNode)
-            stringBuilder.append(x.data).append(", ");
-        return stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), " }").toString();
+        boolean first = true;
+        for (Node x = head; x != null; x = x.nextNode) {
+            if (!first)
+                stringBuilder.append(", ");
+            stringBuilder.append(x.data);
+            first = false;
+        }
+        return stringBuilder.append(" }").toString();
+    }
+
+    /**
+     * Insert Node at the specified index
+     *
+     * @param index the index of the element to replace
+     * @param newNode the new element to set
+     *
+     * @throws IllegalStateException if the list structure is inconsistent (e.g., a node is unexpectedly null)
+     */
+    private void insert(int index, Node newNode) {
+        Node prev = head;
+        for (int i = 0; i < index - 1; i++) {
+            if (prev == null)
+                throw new IllegalStateException();
+            prev = prev.nextNode;
+        }
+        newNode.nextNode = prev.nextNode;
+        prev.nextNode = newNode;
+        if (index == size)
+            tail = newNode;
     }
 
     /**
@@ -812,6 +829,10 @@ public class CustomLinkedList<E> implements CustomLinkedListInterface<E>, Iterab
         return previousValue;
     }
 
+    /**
+     * A node in the singly-linked list, containing an element.
+     *
+     */
     private class Node {
 
         private E data;
