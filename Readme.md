@@ -1,46 +1,11 @@
 # LinkedList
-Custom implementation of a singly LinkedList
+Custom implementation of a Singly LinkedList.
+All methods implemented are of the [Java Linked List](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html) class including the [List](https://docs.oracle.com/javase/8/docs/api/java/util/List.html), [Deque](https://docs.oracle.com/javase/8/docs/api/java/util/Deque.html), [Serializable](https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html) and [Cloneable](https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html) interfaces.
 
-# Methods
-1. `CustomLinkedList()` - constructor.
-2. `CustomLinkedList(Collection<E> items)` - constructor with Collection of items to be added to list, throws NullPointerException on null collection.
-3. `boolean add(E item)` - add item to list, returns true if successful, else false.
-4. `void add(int index, E item)` - add item to list at given index - throws IndexOutOfBoundsException.
-5. `boolean addAll(Collection<E> collection)` - adds collection of items to list, return true if list has changed, else false.
-6. `boolean addAll(int index, Collection<E> collection)` adds all items in collection at given index, throws NullPointerException on null collection, throw IndexOutOfBoundsException on index smaller than 0 or larger than list size.
-7. `void addFirst(E item)` - adds item to start of list.
-8. `void addLast(E item)` - adds item to end of list.
-9. `CustomLinkedList<E> clone()` - returns a shallow copy of the list.
-10. `boolean contains(E item)` - checks if list contains item, returns true if present, else false. Throws NullPointerException on null item.
-11. `E element()` - returns item at start of list.
-12. `boolean equals(Object o)` - compares if two lists are equals, returns true if equal else false.
-13. `E get(int index)` - get item at given index from list, throws IndexOutOfBoundsException on index less than zero or larger than list size.
-14. `int hashCode()` - returns hashcode of list object.
-15. `int indexOf(E item)` - returns the index of item in list if present, else -1.
-16. `int lastIndexOf(E item)` - returns last index of item in list, else -1.
-17. `boolean offer(E item)` - adds item to end of list. returns true if successful, else false.
-18. `boolean offerFirst(E item)` - adds item to start of list. returns true if successful, else false.
-19. `boolean offerLast(E item)` - adds item to end of list. returns true if successful, else false.
-20. `E peek()` - returns but does not remove item at start of list, if empty return null.
-21. `E peekFirst()` - returns but does not remove item from start of list if present, else false.
-22. `E peekLast()` - returns but does not remove item at end of list if present, else null.
-23. `E poll()` - remove and return item from start of list.
-24. `E pollFirst()` - remove and return item from start of list, else null.
-25. `E pollLast()` - remove and return item at end of list, else null.
-26. `void push()` - adds item to start of list.
-27. `boolean remove(int index)` - remove and return item at given index, throws IndexOutOfBoundsException on index less than zero or larger than list size.
-28. `E pop()` - remove and return item from start of list.
-29. `E remove()` - remove and return item from start of list, throws NoSuchElementException on empty list.
-30. `E remove(E item)` - remove and return item from list if present, else return null.
-31. `E removeFirst()` - remove and return item from start of list, throw NoSuchElementException on empty list.
-32. `boolean removeFirstOccurrence(E item)` - remove first occurrence of item in list, returns true if removed, else false.
-33. `E removeLast()` - remove last item from list, throws NoSuchElementException on empty list.
-34. `boolean removeLastOccurrence(E item)` - removes last occurrence of item in list, returns true if list has changed, else false.
-35. `E set(int index, T item)` - sets item at index to new value, returns previous value at index, throws IndexOutOfBoundsException on index smaller than 0 or larger than list size.
-36. `int size()` - return size of list.
-37. `E[] toArray()` - return list as array.
-38. `String toString()` - return String representation of list.
+Implementation of a Dubly Linked List can be found [here](https://https://github.com/bk10aao/CustomDoublyLinkedList/tree/master).
 
+![Null-Hostile](https://img.shields.io/badge/null-hostile-red)
+![JDK-Matched](https://img.shields.io/badge/performance-JDK%20matched-blue)
 # Time Complexity Comparison:
 
 | **Method**                             | **Java LinkedList** | **CustomLinkedList<T>** | **Winner** |

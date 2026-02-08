@@ -1,5 +1,7 @@
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.Set;
  * @see <a href="https://github.com/bk10aao">GitHub Account</a>
  * @see <a href="https://github.com/bk10aao/CustomLinkedList">Repository</a>
  */
-public class CustomLinkedList<E> implements List<E>, Iterable<E> {
+public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, Cloneable {
 
     private transient Node<E> head;
     private transient Node<E> tail;
@@ -317,6 +319,30 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
         if (current == null)
             throw new IllegalStateException();
         return current.data;
+    }
+
+    /**
+     * Gets but does not remove the first element of this list.
+     *
+     * @return {@code E} element at the start of the list.
+     *
+     * @throws NoSuchElementException if this list is empty
+     */
+    public E getFirst() {
+        if(size == 0)
+            throw new NoSuchElementException();
+        return head.data;
+    }
+
+    /**
+     * Gets but does not remove the last element of this list.
+     *
+     * @return {@code E} element at the end of the list.
+     *
+     * @throws NoSuchElementException if this list is empty
+     */
+    public E getLast() {
+        return get(size - 1);
     }
 
     /**
@@ -668,11 +694,11 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
      * Removes the first occurrence of the specified element from this list, if present.
      * If the element is not found, the list is unchanged.
      *
-     * @param item the element to be removed (may be null)
+     * @param item the Object to be removed (may be null)
      *
      * @return {@code true} if the element was found and removed, {@code false} otherwise
      */
-    public boolean removeFirstOccurrence(final E item) {
+    public boolean removeFirstOccurrence(final Object item) {
         if(isEmpty())
             return false;
         if (Objects.equals(head.data, item)) {
@@ -714,7 +740,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E> {
      * @return {@code true} if the element was found and removed, {@code false} if the element is null,
      *         the list is empty, or the element is not found
      */
-    public boolean removeLastOccurrence(final E item) {
+    public boolean removeLastOccurrence(final Object item) {
         if (isEmpty())
             return false;
         Node lastMatchPrev = null;
