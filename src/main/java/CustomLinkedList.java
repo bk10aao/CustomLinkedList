@@ -56,8 +56,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws NullPointerException if the collection or any element is null
      */
     public CustomLinkedList(final Collection<E> items) {
-        if(items == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(items);
         head = tail = null;
         this.addAll(items);
     }
@@ -92,8 +91,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws IndexOutOfBoundsException if the index is out of range ({@code index < 0 || index > size()})
      */
     public void add(final int index, final E data) {
-        if(data == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(data);
         if(index < 0 || index > size)
             throw new IndexOutOfBoundsException();
         Node newNode = new Node(data);
@@ -119,8 +117,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws NullPointerException if the e or any element is null
      */
     public boolean addAll(final Collection<? extends E> e) {
-        if(e == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(e);
         if(e.isEmpty())
             return false;
         for (E item : e)
@@ -143,8 +140,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws IllegalStateException if the list structure is inconsistent during traversal
      */
     public boolean addAll(final int index, final Collection<? extends E> c) {
-        if (c == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(c);
         if (index < 0 || index > size)
             throw new IndexOutOfBoundsException();
         if (c.isEmpty())
@@ -163,8 +159,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws NullPointerException if the element is null
      */
     public void addFirst(final E item) {
-        if(item == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(item);
         Node newHead = new Node(item);
         newHead.nextNode = head;
         head = newHead;
@@ -280,6 +275,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      */
     @SuppressWarnings("unchecked")
     public boolean equals(final Object o) {
+        Objects.requireNonNull(o);
         if (this == o)
             return true;
         if (!(o instanceof CustomLinkedList<?> that))
@@ -781,6 +777,9 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws NullPointerException if {@code c} is null or contains null
      */
     public boolean retainAll(final Collection<?> c) {
+        Objects.requireNonNull(c);
+        if(c.contains(null))
+            throw new NoSuchElementException();
         if (c.isEmpty()) {
             boolean modified = !isEmpty();
             clear();
@@ -811,8 +810,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws IllegalStateException if the list structure is inconsistent (e.g., a node is unexpectedly null)
      */
     public E set(final int index, final E item) {
-        if (item == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(item);
         if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
         if(index == 0) {
@@ -962,8 +960,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws IllegalStateException if the list structure is inconsistent (e.g., a node is unexpectedly null)
      */
     private E updateIndex(final int index, final E item) {
-        if(item == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(item);
         Node<E> current = head;
         for(int i = 0; i < index; i++) {
             if(current == null)
@@ -1093,14 +1090,12 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
         public void set(E e) {
             if (lastReturned == null)
                 throw new IllegalStateException();
-            if (e == null)
-                throw new NullPointerException();
+            Objects.requireNonNull(e);
             lastReturned.data = e;
         }
 
         public void add(E e) {
-            if (e == null)
-                throw new NullPointerException();
+            Objects.requireNonNull(e);
 
             Node<E> newNode = new Node<>(e);
 
