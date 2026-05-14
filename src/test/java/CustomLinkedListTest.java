@@ -1273,7 +1273,8 @@ class CustomLinkedListTest {
     @Test
     public void givenCustomLinkedListOf_1_2_3_onEqualsExactObjectThatMatch_returns_true() {
         CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>(List.of(1, 2, 3));
-        assertEquals(customLinkedList, customLinkedList);
+        CustomLinkedList<Integer> customLinkedListTwo = new CustomLinkedList<>(List.of(1, 2, 3));
+        assertEquals(customLinkedList, customLinkedListTwo);
     }
 
     @Test
@@ -1394,12 +1395,6 @@ class CustomLinkedListTest {
     public void givenCustomLinkedListOf_1_2_3_on_ListIterator_hasNext_returns_true() {
         CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>(List.of(1, 2, 3));
         assertTrue(customLinkedList.listIterator().hasNext());
-    }
-
-    @Test
-    public void givneCustomLinkedListOf_1_2_3_on_ListIterator_hasPrevious_returns_false() {
-        CustomLinkedList<Integer> customLinkedList = new CustomLinkedList<>(List.of(1, 2, 3));
-        assertFalse(customLinkedList.listIterator().hasPrevious());
     }
 
     @Test

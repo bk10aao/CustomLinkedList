@@ -70,7 +70,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      */
     public boolean add(final E item) {
         Node newNode = new Node(item);
-        if (head == null)
+        if(head == null)
             head = tail = newNode;
         else {
             tail.nextNode = newNode;
@@ -146,12 +146,12 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      */
     public boolean addAll(final int index, final Collection<? extends E> c) {
         Objects.requireNonNull(c);
-        if (index < 0 || index > size)
+        if(index < 0 || index > size)
             throw new IndexOutOfBoundsException();
-        if (c.isEmpty())
+        if(c.isEmpty())
             return false;
         int i = index;
-        for (E item : c)
+        for(E item : c)
             add(i++, item);
         return true;
     }
@@ -206,12 +206,12 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      */
     public CustomLinkedList<E> clone() {
         CustomLinkedList<E> clone = new CustomLinkedList<>();
-        if (head == null)
+        if(head == null)
             return clone;
         Node cloneHead = new Node(head.data);
         clone.head = cloneHead;
         Node cloneCurrent = cloneHead;
-        for (Node x = head.nextNode; x != null; x = x.nextNode) {
+        for(Node x = head.nextNode; x != null; x = x.nextNode) {
             cloneCurrent.nextNode = new Node(x.data);
             cloneCurrent = cloneCurrent.nextNode;
         }
@@ -245,7 +245,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
     public boolean containsAll(final Collection<?> c) {
         Set<?> values = (c instanceof Set<?> s) ? s : new HashSet<>(c);
         for(Object o : values)
-            if (!contains(o))
+            if(!contains(o))
                 return false;
         return true;
     }
@@ -281,11 +281,11 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
     @SuppressWarnings("unchecked")
     public boolean equals(final Object o) {
         Objects.requireNonNull(o);
-        if (this == o)
+        if(this == o)
             return true;
-        if (!(o instanceof List<?> that))
+        if(!(o instanceof List<?> that))
             return false;
-        if (size != that.size())
+        if(size != that.size())
             return false;
         Iterator<E> itr1 = this.iterator();
         Iterator<?> itr2 = that.iterator();
@@ -306,14 +306,14 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws IllegalStateException if the list structure is inconsistent (e.g., a node is unexpectedly null)
      */
     public E get(final int index) {
-        if (index < 0 || index >= size())
+        if(index < 0 || index >= size())
             throw new IndexOutOfBoundsException();
         if(index == 0)
             return head.data;
         if(index == size - 1)
             return tail.data;
         Node<E> current = head;
-        for (int i = 0; i < index; i++)
+        for(int i = 0; i < index; i++)
             current = current.nextNode;
         return current.data;
     }
@@ -355,7 +355,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      */
     public int hashCode() {
         int result = 1;
-        for (Node x = head; x != null; x = x.nextNode)
+        for(Node x = head; x != null; x = x.nextNode)
             result = 31 * result + x.data.hashCode();
         return result;
     }
@@ -371,8 +371,8 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      */
     public int indexOf(final Object o) {
         int index = 0;
-        for (Node x = head; x != null; x = x.nextNode, index++)
-            if (Objects.equals(x.data, o))
+        for(Node x = head; x != null; x = x.nextNode, index++)
+            if(Objects.equals(x.data, o))
                 return index;
         return -1;
     }
@@ -407,8 +407,8 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
     public int lastIndexOf(final Object o) {
         int foundIndex = -1;
         int index = 0;
-        for (Node x = head; x != null; x = x.nextNode, index++)
-            if (Objects.equals(x.data, o))
+        for(Node x = head; x != null; x = x.nextNode, index++)
+            if(Objects.equals(x.data, o))
                 foundIndex = index;
         return foundIndex;
     }
@@ -550,12 +550,9 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
             size--;
             return data;
         }
-
         Node<E> previous = head;
-        while(previous.nextNode != tail) {
+        while(previous.nextNode != tail)
             previous = previous.nextNode;
-        }
-
         E data = tail.data;
         previous.nextNode = null;
         tail = previous;
@@ -615,12 +612,12 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws IllegalStateException if the list structure is inconsistent
      */
     public E remove(final int index) {
-        if (index < 0 || index >= size)
+        if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
-        if (index == 0)
+        if(index == 0)
             return poll();
         Node<E> previous = head;
-        for (int i = 0; i < index - 1; i++)
+        for(int i = 0; i < index - 1; i++)
             previous = previous.nextNode;
         Node<E> removedNode = previous.nextNode;
         E removedValue = removedNode.data;
@@ -673,16 +670,15 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      */
     public boolean removeAll(final Collection<?> c) {
         Objects.requireNonNull(c);
-        if (c.isEmpty())
+        if(c.isEmpty())
             return false;
         final Set<?> remove = (c instanceof Set<?>) ? (Set<?>) c : new HashSet<>(c);
         boolean modified = false;
-        for (Node<E> node = head, next; node != null; node = node.nextNode) {
-            if (remove.contains(node.data)) {
+        for(Node<E> node = head, next; node != null; node = node.nextNode)
+            if(remove.contains(node.data)) {
                 unlink(node);
                 modified = true;
             }
-        }
         return modified;
     }
 
@@ -741,17 +737,17 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
         Node lastMatch = null;
         Node previous = null;
         Node current = head;
-        while (current != null) {
-            if (Objects.equals(current.data, item)) {
+        while(current != null) {
+            if(Objects.equals(current.data, item)) {
                 lastMatchPrev = previous;
                 lastMatch = current;
             }
             previous = current;
             current = current.nextNode;
         }
-        if (lastMatch == null)
+        if(lastMatch == null)
             return false;
-        if (lastMatch == head) {
+        if(lastMatch == head) {
             head = head.nextNode;
             if (head == null)
                 tail = null;
@@ -796,9 +792,8 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
                     tail = previous;
                 modified = true;
                 size--;
-            } else {
+            } else
                 previous = node;
-            }
             node = next;
         }
         return modified;
@@ -851,12 +846,12 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      * @throws IndexOutOfBoundsException if {@code fromIndex < 0}, {@code toIndex > size()} or {@code fromIndex > toIndex}
      */
     public List<E> subList(final int fromIndex, final int toIndex) {
-        if (fromIndex < 0 || toIndex > size || fromIndex > toIndex)
+        if(fromIndex < 0 || toIndex > size || fromIndex > toIndex)
             throw new IndexOutOfBoundsException();
         if(fromIndex == toIndex)
             return new CustomLinkedList<>();
         CustomLinkedList<E> result = new CustomLinkedList<>();
-        for (int i = fromIndex; i < toIndex; i++)
+        for(int i = fromIndex; i < toIndex; i++)
             result.add(get(i));
         return result;
     }
@@ -886,12 +881,12 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
      */
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
-        if (a.length < size)
+        if(a.length < size)
             a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
         int index = 0;
-        for (Node x = head; x != null; x = x.nextNode)
+        for(Node x = head; x != null; x = x.nextNode)
             a[index++] = (T) x.data;
-        if (a.length > size)
+        if(a.length > size)
             a[size] = null;
         return a;
     }
@@ -910,8 +905,8 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
             return "[]";
         StringBuilder stringBuilder = new StringBuilder("[");
         boolean first = true;
-        for (Node x = head; x != null; x = x.nextNode) {
-            if (!first)
+        for(Node x = head; x != null; x = x.nextNode) {
+            if(!first)
                 stringBuilder.append(", ");
             stringBuilder.append(x.data);
             first = false;
@@ -935,7 +930,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
             while(previous != null && previous.nextNode != node)
                 previous = previous.nextNode;
             previous.nextNode = node.nextNode;
-            if (node == tail)
+            if(node == tail)
                 tail = previous;
         }
         size--;
@@ -988,29 +983,25 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
 
         CustomListIterator(int index) {
             nextIndex = index;
-
-            if (size == 0) {
+            if(size == 0) {
                 next = null;
                 prev = null;
                 return;
             }
-
-            if (index == 0) {
+            if(index == 0) {
                 next = head;
                 prev = null;
                 return;
             }
-
-            if (index == size) {
+            if(index == size) {
                 next = null;
                 prev = head;
-                for (int i = 1; i < size; i++)
+                for(int i = 1; i < size; i++)
                     prev = prev.nextNode;
                 return;
             }
-
             Node<E> current = head;
-            for (int i = 0; i < index; i++)
+            for(int i = 0; i < index; i++)
                 current = current.nextNode;
             next = current;
             prev = (index == 0) ? null : getNodeAt(index - 1);
@@ -1021,7 +1012,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
         }
 
         public E next() {
-            if (!hasNext())
+            if(!hasNext())
                 throw new NoSuchElementException();
             lastReturned = next;
             prev = lastReturned;
@@ -1035,9 +1026,8 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
         }
 
         public E previous() {
-            if (!hasPrevious()) {
+            if(!hasPrevious())
                 throw new NoSuchElementException();
-            }
             lastReturned = prev;
             next = lastReturned;
             prev = (nextIndex == 1) ? null : getNodeAt(nextIndex - 2);
@@ -1054,22 +1044,22 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
         }
 
         public void remove() {
-            if (lastReturned == null)
+            if(lastReturned == null)
                 throw new IllegalStateException();
 
-            if (lastReturned == head) {
+            if(lastReturned == head) {
                 head = head.nextNode;
                 if (head == null)
                     tail = null;
             } else {
                 Node<E> before = (prev == lastReturned) ? getNodeAt(nextIndex - 2) : prev;
-                if (before == null)
+                if(before == null)
                     throw new IllegalStateException();
                 before.nextNode = lastReturned.nextNode;
-                if (lastReturned == tail)
+                if(lastReturned == tail)
                     tail = before;
             }
-            if (next == lastReturned)
+            if(next == lastReturned)
                 next = lastReturned.nextNode;
             else
                 nextIndex--;
@@ -1078,7 +1068,7 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
         }
 
         public void set(E e) {
-            if (lastReturned == null)
+            if(lastReturned == null)
                 throw new IllegalStateException();
             Objects.requireNonNull(e);
             lastReturned.data = e;
@@ -1089,14 +1079,14 @@ public class CustomLinkedList<E> implements List<E>, Iterable<E>, Serializable, 
 
             Node<E> newNode = new Node<>(e);
 
-            if (next == null)
-                if (tail == null)
+            if(next == null)
+                if(tail == null)
                     head = tail = newNode;
                 else {
                     tail.nextNode = newNode;
                     tail = newNode;
                 }
-            else if (next == head) {
+            else if(next == head) {
                 newNode.nextNode = head;
                 head = newNode;
             } else {
