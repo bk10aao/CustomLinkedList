@@ -1013,7 +1013,6 @@ class CustomLinkedListTest {
         assertTrue(customLinkedList.add(1));
         assertTrue(customLinkedList.add(2));
         assertTrue(customLinkedList.add(3));
-        System.out.println(customLinkedList);
         CustomLinkedList<Integer> clone = customLinkedList.clone();
         assertEquals(customLinkedList, clone);
     }
