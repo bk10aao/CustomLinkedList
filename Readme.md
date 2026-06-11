@@ -92,6 +92,8 @@ notes:
 
 # Performance Charts
 
+#### Note: The following performance charts are designed to be viewed in dark mode.
+
 ## Custom Linked List vs Linked List
 ![Combined Performance Charts](PerformanceTesting/Constructor().png)
 ![Combined Performance Charts](PerformanceTesting/Constructor(Collection).png)
